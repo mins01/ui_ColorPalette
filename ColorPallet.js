@@ -155,17 +155,17 @@ var ColorPallet = function(){
     bar_s.style.left=c_data.s+'%';
     var t = (200-c_data.s)/100;
     bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
-    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0))
-    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0))
-    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0))
+    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+(c_data.s/360*255).toFixed(0))
+    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+(c_data.s/100*255).toFixed(0))
+    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+(c_data.l/100*255).toFixed(0))
     text_h.value = c_data.h.toFixed(0)
     text_s.value = c_data.s.toFixed(0)
     text_l.value = c_data.l.toFixed(0)
     text_r.value = c_data.r.toFixed(0)
     text_g.value = c_data.g.toFixed(0)
     text_b.value = c_data.b.toFixed(0)
-    console.log(cp.toStingHSL(),cp.toStingRGB());
-    document.body.style.backgroundColor=cp.toStingHSL();
+    // console.log(cp.toStingHSL(),cp.toStingRGB());
+    // document.body.style.backgroundColor=cp.toStingHSL();
   }
   /* 퍼블릭 메소드 */
   cp.show = function(){
@@ -189,7 +189,8 @@ var ColorPallet = function(){
     c_data = Object.assign(c_data,hsl);
     var rgb = hsl2rgb(c_data.h,c_data.s,c_data.l);
     c_data = Object.assign(c_data,rgb);      
-    _sync()
+    _sync();
+    cp.dispatchEvent((new CustomEvent("change", {})));
   }
   cp.setRGB = function(r,g,b){
     var rgb ={"r":(r==null?c_data.r:r),"g":(g==null?c_data.g:g),"b":(b==null?c_data.b:b)}
@@ -197,6 +198,7 @@ var ColorPallet = function(){
     var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
     c_data = Object.assign(c_data,hsl);      
     _sync()
+    cp.dispatchEvent((new CustomEvent("change", {})));
   }
   cp.toString = function(){
     return JSON.stringify(c_data);

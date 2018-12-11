@@ -39,6 +39,11 @@
 	var cp;
 	window.addEventListener('load',function(evt){
 		cp = ColorPallet();
+		cp.addEventListener('change',function(evt){
+			document.body.style.backgroundColor=cp.toStingHSL();
+		})
+		document.body.style.backgroundColor=cp.toStingHSL();
+
 	})
 </script>
 
