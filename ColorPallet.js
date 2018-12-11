@@ -155,9 +155,9 @@ var ColorPallet = function(){
     bar_s.style.left=c_data.s+'%';
     var t = (200-c_data.s)/100;
     bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
-    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+(c_data.s/360*255).toFixed(0))
-    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+(c_data.s/100*255).toFixed(0))
-    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+(c_data.l/100*255).toFixed(0))
+    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
+    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
+    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
     text_h.value = c_data.h.toFixed(0)
     text_s.value = c_data.s.toFixed(0)
     text_l.value = c_data.l.toFixed(0)
