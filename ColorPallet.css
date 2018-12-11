@@ -1,0 +1,108 @@
+@charset "UTF-8";
+/**
+* ColorPallet
+* 컬러 파레트
+* "공대여자는 이쁘다"를 표시기해야 쓸 수 있습니다.
+*/
+
+.colorPallet{
+	box-sizing: border-box;
+}
+.colorPallet-tab{
+	position: relative;
+}
+
+.colorPallet-range{
+	position: absolute;top:0;right: -1px;bottom: -1px;left: 0;
+	padding: 0;margin: 0;
+}
+.colorPallet-bar{
+	position: absolute;top:0;left:50%; z-index: 10;
+	pointer-events: none;
+}
+.colorPallet-box{
+	cursor: crosshair;
+}
+
+/* hsl */
+.colorPallet-tab-hsl::before{
+	position: absolute;
+	content: "HSL(" attr(data-h) "," attr(data-s) "%,"  attr(data-l) "%)";
+	z-index: 10;
+}
+.colorPallet-box-sl{
+	position: relative;
+	width:100%; min-height: 100px;
+}
+.colorPallet-range-s{
+	background: linear-gradient(to right, hsl(0, 100%, 100%), hsl(0, 100%, 50%));
+}
+.colorPallet-range-l{
+	background: linear-gradient(to bottom, hsla(0, 0%, 0%,0), hsla(0, 0%, 0%,1));
+	z-index: 2
+}
+
+.colorPallet-box-h{
+	margin-top: 10px;
+	position: relative;
+	min-height: 30px;
+	width: 100%;
+}
+.colorPallet-range-h{
+	background: linear-gradient(to right, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
+	,hsl(80, 100%, 50%),hsl(100, 100%, 50%),hsl(120, 100%, 50%),hsl(140, 100%, 50%),hsl(160, 100%, 50%),hsl(180, 100%, 50%)
+	,hsl(200, 100%, 50%),hsl(220, 100%, 50%),hsl(240, 100%, 50%),hsl(260, 100%, 50%),hsl(280, 100%, 50%),hsl(300, 100%, 50%)
+	,hsl(320, 100%, 50%),hsl(340, 100%, 50%),hsl(360, 100%, 50%));
+}
+
+
+
+/* colorPallet-bar */
+.colorPallet-bar-s{
+	width:1px;overflow: visible;
+	height:100%;
+	margin-left: -0.5px;
+
+}
+.colorPallet-bar-s::before{
+	content: "";
+	box-sizing:border-box;
+	position: absolute;left:-1px;top:-2px;bottom:-2px;right:-1px;
+	border:1px solid #fff;
+	pointer-events: none;
+}
+.colorPallet-bar-l{
+	left:0;top:50%;
+	height:1px;overflow: visible;
+	width:100%;
+
+}
+.colorPallet-bar-l::before{
+	content: "";
+	box-sizing:border-box;
+	position: absolute;left:-2px;top:-1px;bottom:-1px;right:-2px;
+	/* background-color:rgba(0,0,0,0.5); */
+	border:1px solid #fff;
+	pointer-events: none;
+}
+
+.colorPallet-bar-h{
+	width:1px;overflow: visible;
+	height:100%;
+	margin-left: -0.5px;
+}
+.colorPallet-bar-h::before{
+	content: "";
+	box-sizing:border-box;
+	position: absolute;left:-1px;top:-2px;bottom:-2px;right:-1px;
+	border:1px solid #fff;
+	pointer-events: none;
+
+
+}
+
+
+
+
+
+
