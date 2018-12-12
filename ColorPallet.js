@@ -30,12 +30,13 @@ var ColorPallet = function(){
   var bar_s = cp.querySelector(".colorPallet-bar-s");
   var bar_l = cp.querySelector(".colorPallet-bar-l");
   var bar_h = cp.querySelector(".colorPallet-bar-h");
+  var text_h = cp.querySelector(".colorPallet-text-h");
   var text_s = cp.querySelector(".colorPallet-text-s");
   var text_l = cp.querySelector(".colorPallet-text-l");
-  var text_h = cp.querySelector(".colorPallet-text-h");
-  var text_r = cp.querySelector(".colorPallet-text-g");
-  var text_g = cp.querySelector(".colorPallet-text-r");
+  var text_r = cp.querySelector(".colorPallet-text-r");
+  var text_g = cp.querySelector(".colorPallet-text-g");
   var text_b = cp.querySelector(".colorPallet-text-b");
+  var text_hex = cp.querySelector(".colorPallet-text-hex");
   var c_data = {
     h:0,
     s:0,
@@ -151,10 +152,12 @@ var ColorPallet = function(){
   }
   var _sync = function(){
     bar_h.style.left=(c_data.h/360)*100+'%';
-    range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
+    // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
+     range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
     bar_s.style.left=c_data.s+'%';
-    var t = (200-c_data.s)/100;
-    bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
+    // var t = (200-c_data.s)/100;
+    // bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
+    bar_l.style.top=(100-c_data.l)+'%';
     tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
     tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
     tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
@@ -164,6 +167,10 @@ var ColorPallet = function(){
     text_r.value = c_data.r.toFixed(0)
     text_g.value = c_data.g.toFixed(0)
     text_b.value = c_data.b.toFixed(0)
+    text_hex.value = '#'+((c_data.r.toFixed(0)<16)?'0':'')+c_data.r.toString(16)+
+    ((c_data.g.toFixed(0)<16)?'0':'')+c_data.g.toString(16)+
+    ((c_data.b.toFixed(0)<16)?'0':'')+c_data.b.toString(16);
+
     // console.log(cp.toStingHSL(),cp.toStingRGB());
     // document.body.style.backgroundColor=cp.toStingHSL();
   }
@@ -185,7 +192,7 @@ var ColorPallet = function(){
     return "rgb("+c_data.r.toFixed(0)+","+c_data.g.toFixed(0)+","+c_data.b.toFixed(0)+")";
   }  
   cp.setHSL = function(h,s,l){
-    var hsl ={"h":(h==null?c_data.h:h),"s":(s==null?c_data.s:s),"l":(s==null?c_data.l:l)}
+    var hsl ={"h":parseFloat(h==null?c_data.h:h),"s":parseFloat(s==null?c_data.s:s),"l":parseFloat(s==null?c_data.l:l)}
     c_data = Object.assign(c_data,hsl);
     var rgb = hsl2rgb(c_data.h,c_data.s,c_data.l);
     c_data = Object.assign(c_data,rgb);      
@@ -193,7 +200,7 @@ var ColorPallet = function(){
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
   cp.setRGB = function(r,g,b){
-    var rgb ={"r":(r==null?c_data.r:r),"g":(g==null?c_data.g:g),"b":(b==null?c_data.b:b)}
+    var rgb ={"r":parseFloat(r==null?c_data.r:r),"g":parseFloat(g==null?c_data.g:g),"b":parseFloat(b==null?c_data.b:b)}
     c_data = Object.assign(c_data,rgb);
     var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
     c_data = Object.assign(c_data,hsl);      
@@ -228,12 +235,21 @@ var ColorPallet = function(){
     x = Math.max(0,Math.min(bcr.width,x));
     y = Math.max(0,Math.min(bcr.height,y));
     var s = x/bcr.width*100;
-    var t = (200-s)/100;
-    var l = (1-y/bcr.height)*50*t;
+    // var t = (200-s)/100;
+    // var l = (1-y/bcr.height)*50*t;
+    var l = (1-y/bcr.height)*100;
     // console.log(s,l)
     cp.setHSL(null,s,l);
   }
   toDraggable(box_sl,cb_for_sl,cb_for_sl,null);
+  var input_hsl = function(evt){cp.setHSL(text_h.value,text_s.value,text_l.value)}
+  text_h.addEventListener("input",input_hsl);
+  text_s.addEventListener("input",input_hsl);
+  text_l.addEventListener("input",input_hsl);
+  var input_rgb = function(evt){cp.setRGB(text_r.value,text_g.value,text_b.value)}
+  text_r.addEventListener("input",input_rgb);
+  text_g.addEventListener("input",input_rgb);
+  text_b.addEventListener("input",input_rgb);
   /* 내용 초기화 */
   _sync();
   return cp;

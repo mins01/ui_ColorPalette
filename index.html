@@ -40,9 +40,9 @@
 	window.addEventListener('load',function(evt){
 		cp = ColorPallet();
 		cp.addEventListener('change',function(evt){
-			document.body.style.backgroundColor=cp.toStingHSL();
+			document.body.style.backgroundColor=cp.toStingRGB();
 		})
-		document.body.style.backgroundColor=cp.toStingHSL();
+		document.body.style.backgroundColor=cp.toStingRGB();
 
 	})
 </script>
@@ -67,10 +67,11 @@
 			<div  class="colorPallet-tab colorPallet-tab-info">
 				HSL(<input class="colorPallet-text-h" type="number" min="0" max="360" /> ,
 				<input class="colorPallet-text-s" type="number" min="0" max="100" />% ,
-				<input class="colorPallet-text-l" type="number" min="0" max="100" />%)
+				<input class="colorPallet-text-l" type="number" min="0" max="100" />%)<br />
 				RGB(<input class="colorPallet-text-r" type="number" min="0" max="255" /> ,
 				<input class="colorPallet-text-g" type="number" min="0" max="255" /> ,
-				<input class="colorPallet-text-b" type="number" min="0" max="255" />)
+				<input class="colorPallet-text-b" type="number" min="0" max="255" />)<br />
+				HEX <input class="colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />
 			</div>
 		</div>
 	</body>
