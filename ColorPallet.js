@@ -150,7 +150,7 @@ var ColorPallet = function(){
     l = Math.floor(l * 100)
     return { h: h, s: s, l: l }
   }
-  var _sync = function(){
+  var _sync = function(byInput){
     bar_h.style.left=(c_data.h/360)*100+'%';
     // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
      range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
@@ -161,16 +161,19 @@ var ColorPallet = function(){
     tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
     tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
     tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
-    text_h.value = c_data.h.toFixed(0)
-    text_s.value = c_data.s.toFixed(0)
-    text_l.value = c_data.l.toFixed(0)
-    text_r.value = c_data.r.toFixed(0)
-    text_g.value = c_data.g.toFixed(0)
-    text_b.value = c_data.b.toFixed(0)
-    text_hex.value = '#'+((c_data.r.toFixed(0)<16)?'0':'')+c_data.r.toString(16)+
-    ((c_data.g.toFixed(0)<16)?'0':'')+c_data.g.toString(16)+
-    ((c_data.b.toFixed(0)<16)?'0':'')+c_data.b.toString(16);
-
+    if(byInput!='hsl'){
+      text_h.value = c_data.h.toFixed(0)
+      text_s.value = c_data.s.toFixed(0)
+      text_l.value = c_data.l.toFixed(0)  
+    }
+    if(byInput!='rgb'){
+      text_r.value = c_data.r.toFixed(0)
+      text_g.value = c_data.g.toFixed(0)
+      text_b.value = c_data.b.toFixed(0)
+    }
+    if(byInput!='hex'){
+      text_hex.value = cp.toStingHEX();
+    }
     // console.log(cp.toStingHSL(),cp.toStingRGB());
     // document.body.style.backgroundColor=cp.toStingHSL();
   }
@@ -183,14 +186,33 @@ var ColorPallet = function(){
   }
   cp.setData = function(data){
     c_data = Object.assign(c_data,data);
-    _sync()
+    _sync();
+    cp.dispatchEvent((new CustomEvent("change", {})));
   }
   cp.toStingHSL = function(){
     return "hsl("+c_data.h.toFixed(0)+","+c_data.s.toFixed(0)+"%,"+c_data.l.toFixed(0)+"%)";
   }
   cp.toStingRGB = function(){
     return "rgb("+c_data.r.toFixed(0)+","+c_data.g.toFixed(0)+","+c_data.b.toFixed(0)+")";
+  }
+  cp.toStingHEX = function(){
+    return '#'+((c_data.r.toFixed(0)<16)?'0':'')+c_data.r.toString(16)+((c_data.g.toFixed(0)<16)?'0':'')+c_data.g.toString(16)+((c_data.b.toFixed(0)<16)?'0':'')+c_data.b.toString(16);
   }  
+  cp.setHEX = function(hex_str){
+    var str = hex_str.replace(/^#/,'');
+    if(str.length==3){
+      str = str[0]+str[0]+str[1]+str[1]+str[2]+str[2];
+    }
+    var r = parseInt((str[0]+str[1]),16);
+    var g = parseInt((str[2]+str[3]),16);
+    var b = parseInt((str[4]+str[5]),16);
+    var rgb ={"r":parseFloat(r==null?c_data.r:r),"g":parseFloat(g==null?c_data.g:g),"b":parseFloat(b==null?c_data.b:b)}
+    c_data = Object.assign(c_data,rgb);
+    var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
+    c_data = Object.assign(c_data,hsl);      
+    _sync('hex')
+    cp.dispatchEvent((new CustomEvent("change", {})));
+  }
   cp.setHSL = function(h,s,l){
     var hsl ={"h":parseFloat(h==null?c_data.h:h),"s":parseFloat(s==null?c_data.s:s),"l":parseFloat(s==null?c_data.l:l)}
     c_data = Object.assign(c_data,hsl);
@@ -250,6 +272,8 @@ var ColorPallet = function(){
   text_r.addEventListener("input",input_rgb);
   text_g.addEventListener("input",input_rgb);
   text_b.addEventListener("input",input_rgb);
+  var input_hex = function(evt){cp.setHEX(text_hex.value)}
+  text_hex.addEventListener("input",input_hex);
   /* 내용 초기화 */
   _sync();
   return cp;
