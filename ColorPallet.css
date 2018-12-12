@@ -85,9 +85,6 @@
 .colorPallet-bar-s{
 	width:1px;overflow: visible;
 	height:100%;
-	margin-left: -0.5px;
-	mix-blend-mode: overlay;
-	
 }
 .colorPallet-bar-s::before{
 	content: "";
@@ -99,8 +96,7 @@
 .colorPallet-bar-l{
 	left:0;top:50%;
 	height:1px;overflow: visible;
-	width:100%;
-	mix-blend-mode: overlay;
+	width:100%;	
 }
 .colorPallet-bar-l::before{
 	content: "";
@@ -114,7 +110,6 @@
 .colorPallet-bar-h{
 	width:1px;overflow: visible;
 	height:100%;
-	margin-left: -0.5px;
 	
 }
 .colorPallet-bar-h::before{
@@ -123,11 +118,32 @@
 	position: absolute;left:-1px;top:-2px;bottom:-2px;right:-1px;
 	border:1px solid #fff;
 	pointer-events: none;
-	mix-blend-mode: overlay;
 }
 
 
 
-
+/* 버튼 들 */
+.colorPallet-btn{
+	border:0px solid #000;
+	width:3em;
+	height:1.5em;
+	margin:2px 0.3em;
+	vertical-align: top;
+}
+.colorPallet-btn:focus{
+	outline-width:0;
+}
+.colorPallet-btn-curr::before{
+	content: " "
+}
+.colorPallet-btn-new::before{
+	content: ""
+}
+.colorPallet-btn-confirm::before{
+	content: "OK"
+}
+.colorPallet-btn-cancel::before{
+	content: "NO"
+}
 
 

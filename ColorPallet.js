@@ -37,6 +37,10 @@ var ColorPallet = function(){
   var text_g = cp.querySelector(".colorPallet-text-g");
   var text_b = cp.querySelector(".colorPallet-text-b");
   var text_hex = cp.querySelector(".colorPallet-text-hex");
+  var btn_curr = cp.querySelector(".colorPallet-btn-curr");
+  var btn_new = cp.querySelector(".colorPallet-btn-new");
+  var btn_confirm = cp.querySelector(".colorPallet-btn-confirm");
+  var btn_cancel = cp.querySelector(".colorPallet-btn-cancel");
   var c_data = {
     h:0,
     s:0,
@@ -153,14 +157,19 @@ var ColorPallet = function(){
   var _sync = function(byInput){
     bar_h.style.left=(c_data.h/360)*100+'%';
     // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
-     range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
+    range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
+    btn_new.style.backgroundColor=cp.toStingRGB();
+    btn_new.c_data = Object.assign({},c_data);
     bar_s.style.left=c_data.s+'%';
     // var t = (200-c_data.s)/100;
     // bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
     bar_l.style.top=(100-c_data.l)+'%';
-    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
-    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
-    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
+    // tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
+    // tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
+    // tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
+    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0))
+    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0))
+    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0))
     if(byInput!='hsl'){
       text_h.value = c_data.h.toFixed(0)
       text_s.value = c_data.s.toFixed(0)
@@ -232,6 +241,14 @@ var ColorPallet = function(){
   cp.toString = function(){
     return JSON.stringify(c_data);
   }
+  cp.confirm = function(){
+    btn_curr.style.backgroundColor=cp.toStingRGB();
+    btn_curr.c_data = Object.assign({},c_data);
+    cp.dispatchEvent((new CustomEvent("confirm", {})));
+  }
+  cp.cancel = function(){
+    cp.dispatchEvent((new CustomEvent("cancel", {})));
+  }
   /* 이벤트 초기화 부분   */
   var cb_for_h=function(evt,gapX,gapY,target,data){
     // if(gapX==0){return;}
@@ -264,17 +281,26 @@ var ColorPallet = function(){
     cp.setHSL(null,s,l);
   }
   toDraggable(box_sl,cb_for_sl,cb_for_sl,null);
-  var input_hsl = function(evt){cp.setHSL(text_h.value,text_s.value,text_l.value)}
-  text_h.addEventListener("input",input_hsl);
-  text_s.addEventListener("input",input_hsl);
-  text_l.addEventListener("input",input_hsl);
-  var input_rgb = function(evt){cp.setRGB(text_r.value,text_g.value,text_b.value)}
-  text_r.addEventListener("input",input_rgb);
-  text_g.addEventListener("input",input_rgb);
-  text_b.addEventListener("input",input_rgb);
-  var input_hex = function(evt){cp.setHEX(text_hex.value)}
-  text_hex.addEventListener("input",input_hex);
+  var cb_hsl = function(evt){cp.setHSL(text_h.value,text_s.value,text_l.value)}
+  text_h.addEventListener("input",cb_hsl);
+  text_s.addEventListener("input",cb_hsl);
+  text_l.addEventListener("input",cb_hsl);
+  var cb_rgb = function(evt){cp.setRGB(text_r.value,text_g.value,text_b.value)}
+  text_r.addEventListener("input",cb_rgb);
+  text_g.addEventListener("input",cb_rgb);
+  text_b.addEventListener("input",cb_rgb);
+  var cb_hex = function(evt){cp.setHEX(text_hex.value)}
+  text_hex.addEventListener("input",cb_hex);
+  var cb_confirm = function(evt){cp.confirm()}
+  btn_confirm.addEventListener("click",cb_confirm);
+  var cb_cancel = function(evt){cp.cancel()}
+  btn_cancel.addEventListener("click",cb_cancel);
+  var cb_curr = function(evt){cp.setData(this.c_data);}
+  btn_curr.addEventListener("click",cb_curr);
+  // btn_new.addEventListener("click",cb_curr);
   /* 내용 초기화 */
   _sync();
+  btn_curr.style.backgroundColor=cp.toStingRGB();
+
   return cp;
 }
