@@ -32,12 +32,16 @@
 	<meta property="og:type" content="website">
 	
 	<!-- //meta og -->
+	<link rel="stylesheet" href="InputRangeBox/InputRangeBox.css"> 
+	<script src="InputRangeBox/InputRangeBox.js"></script>
+	
 	<script src="toDraggable/toDraggable.js"></script>	
 	<link rel="stylesheet" href="ColorPallet.css"> 
 	<script src="ColorPallet.js"></script>
 	<script>
 	var cp;
 	window.addEventListener('load',function(evt){
+		InputRangeBox.onload();
 		cp = ColorPallet();
 		cp.addEventListener('change',function(evt){
 			console.log(evt.type)
@@ -49,7 +53,7 @@
 			console.log(evt.type)
 		})
 		
-
+		
 	})
 </script>
 
@@ -71,19 +75,44 @@
 				</div>
 			</div>
 			<div  class="colorPallet-tab colorPallet-tab-info">
-				HSL(<input class="colorPallet-text-h" type="number" min="0" max="360" /> ,
-				<input class="colorPallet-text-s" type="number" min="0" max="100" />% ,
-				<input class="colorPallet-text-l" type="number" min="0" max="100" />%)<br />
-				RGB(<input class="colorPallet-text-r" type="number" min="0" max="255" /> ,
-				<input class="colorPallet-text-g" type="number" min="0" max="255" /> ,
-				<input class="colorPallet-text-b" type="number" min="0" max="255" />)<br />
-				HEX <input class="colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />
+				
+				<div class="colorPallet-box colorPallet-box-hsl">
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="H " data-suffix="" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-h" type="range" min="0" max="360" step="1"  />
+					</div>
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="S " data-suffix="%" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-s" type="range" min="0" max="100" step="1"  />
+					</div>
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="L " data-suffix="%" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-l" type="range" min="0" max="100" step="1"  />
+					</div>
+				</div>
+				<div class="colorPallet-box colorPallet-box-rgb">
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="R " data-suffix="" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-r" type="range" min="0" max="255" step="1"  />
+					</div>
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="G " data-suffix="" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-g" type="range" min="0" max="255" step="1"  />
+					</div>
+					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="B " data-suffix="" style="width:100%;">
+						<input class="colorPallet-text colorPallet-text-b" type="range" min="0" max="255" step="1"  />
+					</div>
+				</div>
+				<div class="colorPallet-box colorPallet-box-hex">
+					<span>HEX</span>
+					<input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	
+				</div>
+				<div class="colorPallet-box colorPallet-box-btns">
+					<button type="button" class="colorPallet-btn colorPallet-btn-curr"></button>
+					<button type="button" class="colorPallet-btn colorPallet-btn-new"></button>
+					<button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button>
+					<button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button>
+				</div>
 			</div>
-			<div  class="colorPallet-tab colorPallet-tab-btns">
-				<button type="button" class="colorPallet-btn colorPallet-btn-curr"></button>
-				<button type="button" class="colorPallet-btn colorPallet-btn-new"></button>
-				<button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button>
-				<button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button>
+			<div class="colorPallet-tab colorPallet-tab-history">
+				<div class="colorPallet-history">
+					
+				</div>
 			</div>
 		</div>
 	</body>

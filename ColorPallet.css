@@ -7,6 +7,7 @@
 
 .colorPallet{
 	box-sizing: border-box;
+	min-width: 300px;
 }
 .colorPallet-tab{
 	position: relative;
@@ -21,29 +22,35 @@
 	pointer-events: none;
 }
 .colorPallet-box{
-	cursor: crosshair;
 	background-color: #fff;
 }
 
 /* hsl */
+.colorPallet-tab-hsl{
+	display: flex;
+	min-height: 360px
+}
 .colorPallet-tab-hsl::before{
 	position: absolute;
-	content: "HSL(" attr(data-h) "," attr(data-s) "%,"  attr(data-l) "%)";
+	text-align: right;
+	content: attr(data-toStringHSL) "\a" attr(data-toStringRGB) "\a" attr(data-toStringHEX) ;
+	white-space: pre;
 	z-index: 10;
 	pointer-events: none;
 	color:#fff;
-	text-shadow: 1px 1px 5px rgba(255,255,255,0.9);
-	top:0;right:0;bottom: 0;left:0;
-	text-align: right;
-	
-	/* display: flex ;
-	justify-content: right;  /* 가로 중앙 */ */
-	/* align-items: bottom; /* 세로 중앙 */	 */
+	box-shadow: 1px 1px 5px rgba(255,255,255,0.9);
+	top:auto;right:45px;bottom: 5px;left:auto;
+	background-color: rgba(0,0,0,0.2);
+	padding:5px;
+	border-radius: 5px;
+	width: 9em;
 }
 .colorPallet-box-sl{
 	position: relative;
-	width:100%; min-height: 200px;
-	isolation: isolate; 
+	cursor: crosshair;
+	min-height: 200px;
+	isolation: isolate;
+	flex: 1 0 auto;
 }
 .colorPallet-range-s{
 	/* background: linear-gradient(to right bottom, hsl(0, 100%, 100%), hsl(0, 100%, 50%)) !important; */
@@ -54,7 +61,7 @@
 	
 	;
 	/* mix-blend-mode: multiply; */
-
+	
 }
 .colorPallet-range-l{
 	/* mix-blend-mode: multiply; */
@@ -66,14 +73,14 @@
 }
 
 .colorPallet-box-h{
-	margin-top: 10px;
+	margin-left: 10px;
 	position: relative;
-	min-height: 30px;
-	width: 100%;
+	cursor: crosshair;
 	isolation: isolate; 
+	flex: 0 0 30px;
 }
 .colorPallet-range-h{
-	background: linear-gradient(to right, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
+	background: linear-gradient(to bottom, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
 	,hsl(80, 100%, 50%),hsl(100, 100%, 50%),hsl(120, 100%, 50%),hsl(140, 100%, 50%),hsl(160, 100%, 50%),hsl(180, 100%, 50%)
 	,hsl(200, 100%, 50%),hsl(220, 100%, 50%),hsl(240, 100%, 50%),hsl(260, 100%, 50%),hsl(280, 100%, 50%),hsl(300, 100%, 50%)
 	,hsl(320, 100%, 50%),hsl(340, 100%, 50%),hsl(360, 100%, 50%));
@@ -82,16 +89,19 @@
 
 
 /* colorPallet-bar */
+.colorPallet-bar::before{
+	content: "";
+	box-sizing:border-box;
+	border:1px solid #fff;
+	pointer-events: none;
+	position: absolute;
+}
 .colorPallet-bar-s{
 	width:1px;overflow: visible;
 	height:100%;
 }
 .colorPallet-bar-s::before{
-	content: "";
-	box-sizing:border-box;
-	position: absolute;left:-1px;top:-2px;bottom:-2px;right:-1px;
-	border:1px solid #fff;
-	pointer-events: none;
+	left:-1px;top:-2px;bottom:-2px;right:-1px;
 }
 .colorPallet-bar-l{
 	left:0;top:50%;
@@ -99,25 +109,16 @@
 	width:100%;	
 }
 .colorPallet-bar-l::before{
-	content: "";
-	box-sizing:border-box;
-	position: absolute;left:-2px;top:-1px;bottom:-1px;right:-2px;
-	/* background-color:rgba(0,0,0,0.5); */
-	border:1px solid #fff;
-	pointer-events: none;
+	left:-2px;top:-1px;bottom:-1px;right:-2px;
 }
 
 .colorPallet-bar-h{
-	width:1px;overflow: visible;
-	height:100%;
+	height:1px;overflow: visible;
+	width:100%;
 	
 }
 .colorPallet-bar-h::before{
-	content: "";
-	box-sizing:border-box;
-	position: absolute;left:-1px;top:-2px;bottom:-2px;right:-1px;
-	border:1px solid #fff;
-	pointer-events: none;
+	left:-2px;top:-1px;bottom:-1px;right:-2px;
 }
 
 
@@ -126,15 +127,16 @@
 .colorPallet-btn{
 	border:0px solid #000;
 	width:3em;
-	height:1.5em;
+	height:2em;
 	margin:2px 0.3em;
 	vertical-align: top;
+	border-radius: 0.5em;
 }
 .colorPallet-btn:focus{
 	outline-width:0;
 }
 .colorPallet-btn-curr::before{
-	content: " "
+	content: ""
 }
 .colorPallet-btn-new::before{
 	content: ""
@@ -147,3 +149,35 @@
 }
 
 
+/* input 텍스트 */
+.colorPallet-text{
+	width:3em;text-align: right;
+}
+
+
+.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-hex , .colorPallet-box-btns{
+	display: flex;
+	margin-top:0.5em;
+}
+
+.colorPallet-box-hex{
+ display: block;
+ text-align: center;	
+}
+
+.colorPallet-text-hex{
+	width:5em; text-align: left; background-color: transparent; 
+	border-width:0;
+	border-bottom: 1px solid #ccc;
+}
+.colorPallet-box-btns >*{
+	width: 100%;
+}
+
+
+/* 히스토리 */
+.colorPallet-history{
+	display: inline-block;
+	width:2em;height: 2em;
+	margin:5px;
+}

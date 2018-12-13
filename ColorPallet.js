@@ -22,6 +22,7 @@ var ColorPallet = function(){
   // '</div>';
   var cp = document.getElementById("test");
   var tab_hsl = cp.querySelector(".colorPallet-tab-hsl");
+  var tab_history = cp.querySelector(".colorPallet-tab-history");
   var box_sl = cp.querySelector(".colorPallet-box-sl");
   var box_h = cp.querySelector(".colorPallet-box-h");
   var range_s = cp.querySelector(".colorPallet-range-s");
@@ -41,14 +42,8 @@ var ColorPallet = function(){
   var btn_new = cp.querySelector(".colorPallet-btn-new");
   var btn_confirm = cp.querySelector(".colorPallet-btn-confirm");
   var btn_cancel = cp.querySelector(".colorPallet-btn-cancel");
-  var c_data = {
-    h:0,
-    s:0,
-    l:0,
-    r:0,
-    g:0,
-    b:0
-  }
+  var cp_history = [];
+  var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
   bar_h.style.top=0;  bar_h.style.left=0;
@@ -154,11 +149,41 @@ var ColorPallet = function(){
     l = Math.floor(l * 100)
     return { h: h, s: s, l: l }
   }
+  function addColorHistory(i_c_data,pushSkip){
+    var his = document.createElement('div');
+    his.className="colorPallet-history"
+    his.c_data = Object.assign({},i_c_data);
+    var stringRGB = cp.toStringRGB(his.c_data);
+    his.style.backgroundColor = stringRGB;
+    if(!pushSkip){
+      if(!cp_history.find(function(v){
+        return stringRGB == cp.toStringRGB(v);
+      })){
+        cp_history.push(Object.assign({},i_c_data));
+        saveHistoryToLS();
+        tab_history.appendChild(his);
+      }
+    }else{
+      saveHistoryToLS();
+      tab_history.appendChild(his);  
+    }
+    
+  }
+  function saveHistoryToLS(){
+    localStorage.setItem("cp_history",JSON.stringify(cp_history));
+  }
+  function initHistoryFromLS(){
+    cp_history = JSON.parse(localStorage.getItem("cp_history"));
+    tab_history.innerHTML = "";
+    for(var i=0,m=cp_history.length;i<m;i++){
+      addColorHistory(cp_history[i],true);
+    }
+  }
   var _sync = function(byInput){
-    bar_h.style.left=(c_data.h/360)*100+'%';
+    bar_h.style.top=(c_data.h/360)*100+'%';
     // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
     range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
-    btn_new.style.backgroundColor=cp.toStingRGB();
+    btn_new.style.backgroundColor=cp.toStringRGB();
     btn_new.c_data = Object.assign({},c_data);
     bar_s.style.left=c_data.s+'%';
     // var t = (200-c_data.s)/100;
@@ -167,9 +192,9 @@ var ColorPallet = function(){
     // tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
     // tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
     // tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
-    tab_hsl.setAttribute('data-h',c_data.h.toFixed(0))
-    tab_hsl.setAttribute('data-s',c_data.s.toFixed(0))
-    tab_hsl.setAttribute('data-l',c_data.l.toFixed(0))
+    tab_hsl.setAttribute('data-toStringHSL',cp.toStringHSL())
+    tab_hsl.setAttribute('data-toStringRGB',cp.toStringRGB())
+    tab_hsl.setAttribute('data-toStringHEX',cp.toStringHEX())
     if(byInput!='hsl'){
       text_h.value = c_data.h.toFixed(0)
       text_s.value = c_data.s.toFixed(0)
@@ -181,10 +206,10 @@ var ColorPallet = function(){
       text_b.value = c_data.b.toFixed(0)
     }
     if(byInput!='hex'){
-      text_hex.value = cp.toStingHEX();
+      text_hex.value = cp.toStringHEX();
     }
-    // console.log(cp.toStingHSL(),cp.toStingRGB());
-    // document.body.style.backgroundColor=cp.toStingHSL();
+    // console.log(cp.toStringHSL(),cp.toStringRGB());
+    // document.body.style.backgroundColor=cp.toStringHSL();
   }
   /* 퍼블릭 메소드 */
   cp.show = function(){
@@ -193,19 +218,25 @@ var ColorPallet = function(){
   cp.hide = function(){
     this.style.display='none';
   }
+  cp.getData = function(){
+    return Object.assign({},c_data);;
+  }
   cp.setData = function(data){
     c_data = Object.assign(c_data,data);
     _sync();
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
-  cp.toStingHSL = function(){
-    return "hsl("+c_data.h.toFixed(0)+","+c_data.s.toFixed(0)+"%,"+c_data.l.toFixed(0)+"%)";
+  cp.toStringHSL = function(i_c_data){
+    var v_c_data = i_c_data?i_c_data:c_data;
+    return "hsl("+v_c_data.h.toFixed(0)+","+v_c_data.s.toFixed(0)+"%,"+v_c_data.l.toFixed(0)+"%)";
   }
-  cp.toStingRGB = function(){
-    return "rgb("+c_data.r.toFixed(0)+","+c_data.g.toFixed(0)+","+c_data.b.toFixed(0)+")";
+  cp.toStringRGB = function(i_c_data){
+    var v_c_data = i_c_data?i_c_data:c_data;
+    return "rgb("+v_c_data.r.toFixed(0)+","+v_c_data.g.toFixed(0)+","+v_c_data.b.toFixed(0)+")";
   }
-  cp.toStingHEX = function(){
-    return '#'+((c_data.r.toFixed(0)<16)?'0':'')+c_data.r.toString(16)+((c_data.g.toFixed(0)<16)?'0':'')+c_data.g.toString(16)+((c_data.b.toFixed(0)<16)?'0':'')+c_data.b.toString(16);
+  cp.toStringHEX = function(i_c_data){
+    var v_c_data = i_c_data?i_c_data:c_data;
+    return '#'+((v_c_data.r.toFixed(0)<16)?'0':'')+v_c_data.r.toString(16)+((v_c_data.g.toFixed(0)<16)?'0':'')+v_c_data.g.toString(16)+((v_c_data.b.toFixed(0)<16)?'0':'')+v_c_data.b.toString(16);
   }  
   cp.setHEX = function(hex_str){
     var str = hex_str.replace(/^#/,'');
@@ -242,8 +273,9 @@ var ColorPallet = function(){
     return JSON.stringify(c_data);
   }
   cp.confirm = function(){
-    btn_curr.style.backgroundColor=cp.toStingRGB();
+    btn_curr.style.backgroundColor=cp.toStringRGB();
     btn_curr.c_data = Object.assign({},c_data);
+    addColorHistory(c_data)
     cp.dispatchEvent((new CustomEvent("confirm", {})));
   }
   cp.cancel = function(){
@@ -255,11 +287,12 @@ var ColorPallet = function(){
     var bcr = target.getBoundingClientRect();
     var xy = _getXY(evt);
     var x = xy[0], y = xy[1];
-    x-=bcr.left
-    // y-=bcr.top
-    x = Math.max(0,Math.min(bcr.width,x));
-    // y = Math.max(0,Math.min(bcr.height,y));
-    var h = x/bcr.width*360;
+    // x-=bcr.left
+    y-=bcr.top
+    // x = Math.max(0,Math.min(bcr.width,x));
+    y = Math.max(0,Math.min(bcr.height,y));
+    // var h = x/bcr.width*360;
+    var h = y/bcr.height*360;
     // console.log(h)
     cp.setHSL(h,null,null);
   }
@@ -298,9 +331,15 @@ var ColorPallet = function(){
   var cb_curr = function(evt){cp.setData(this.c_data);}
   btn_curr.addEventListener("click",cb_curr);
   // btn_new.addEventListener("click",cb_curr);
+  tab_history.addEventListener("click",function(evt){
+    var target = evt.target;
+    if(!target.c_data){return;}
+  });
   /* 내용 초기화 */
   _sync();
-  btn_curr.style.backgroundColor=cp.toStingRGB();
-
+  btn_curr.style.backgroundColor=cp.toStringRGB();
+  initHistoryFromLS();
+  
+  
   return cp;
 }
