@@ -173,6 +173,9 @@
 .colorPallet-box-btns >*{
 	width: 100%;
 }
+.colorPallet-tab-info .inputRangeBox{
+	margin:0 0.2em;
+}
 
 
 /* 히스토리 */

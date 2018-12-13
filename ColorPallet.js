@@ -4,8 +4,8 @@
 * "공대여자는 이쁘다"를 표시기해야 쓸 수 있습니다.
 */
 
-var ColorPallet = function(){
-  
+var ColorPallet = function(i_opt){
+  var opt = Object.assign({"def_color":[]},i_opt?i_opt:{});
   /* 모영 초기화 */
   // var cp = document.createElement('div');
   // cp.innerHTML = '<div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" >'+
@@ -43,6 +43,7 @@ var ColorPallet = function(){
   var btn_confirm = cp.querySelector(".colorPallet-btn-confirm");
   var btn_cancel = cp.querySelector(".colorPallet-btn-cancel");
   var cp_history = [];
+  var def_color =[];
   var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
@@ -149,24 +150,13 @@ var ColorPallet = function(){
     l = Math.floor(l * 100)
     return { h: h, s: s, l: l }
   }
-  function addColorHistory(i_c_data,pushSkip){
-    var his = document.createElement('div');
-    his.className="colorPallet-history"
-    his.c_data = Object.assign({},i_c_data);
-    var stringRGB = cp.toStringRGB(his.c_data);
-    his.style.backgroundColor = stringRGB;
-    if(!pushSkip){
-      if(!cp_history.find(function(v){
-        return stringRGB == cp.toStringRGB(v);
-      })){
-        cp_history.push(Object.assign({},i_c_data));
-        saveHistoryToLS();
-        tab_history.appendChild(his);
-      }
-    }else{
-      saveHistoryToLS();
-      tab_history.appendChild(his);  
+  function addColorHistory(i_c_data){    
+    var stringRGB = cp.toStringRGB(i_c_data);
+    if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})){
+      cp_history.push(Object.assign({},i_c_data));  
+      showHistory();
     }
+    
     
   }
   function saveHistoryToLS(){
@@ -174,10 +164,34 @@ var ColorPallet = function(){
   }
   function initHistoryFromLS(){
     cp_history = JSON.parse(localStorage.getItem("cp_history"));
+    showHistory();
+  }
+  function showHistory(){
     tab_history.innerHTML = "";
-    for(var i=0,m=cp_history.length;i<m;i++){
-      addColorHistory(cp_history[i],true);
+    var maxHistory = cp.getAttribute('data-maxHistory');
+    maxHistory= (maxHistory==null)?10:parseInt(maxHistory,10);
+    if(cp_history.length > maxHistory){
+      cp_history.splice(0,cp_history.length-maxHistory);
     }
+    saveHistoryToLS()
+    for(var i=0,m=def_color.length;i<m;i++){
+      var i_c_data= def_color[i];
+      var his = document.createElement('div');
+      his.className="colorPallet-history"
+      his.c_data = Object.assign({},i_c_data);
+      var stringRGB = cp.toStringRGB(his.c_data);
+      his.style.backgroundColor = stringRGB;
+      tab_history.appendChild(his);  
+    }   
+    for(var i=0,m=cp_history.length;i<m;i++){
+      var i_c_data= cp_history[i];
+      var his = document.createElement('div');
+      his.className="colorPallet-history"
+      his.c_data = Object.assign({},i_c_data);
+      var stringRGB = cp.toStringRGB(his.c_data);
+      his.style.backgroundColor = stringRGB;
+      tab_history.appendChild(his);  
+    }    
   }
   var _sync = function(byInput){
     bar_h.style.top=(c_data.h/360)*100+'%';
@@ -239,15 +253,7 @@ var ColorPallet = function(){
     return '#'+((v_c_data.r.toFixed(0)<16)?'0':'')+v_c_data.r.toString(16)+((v_c_data.g.toFixed(0)<16)?'0':'')+v_c_data.g.toString(16)+((v_c_data.b.toFixed(0)<16)?'0':'')+v_c_data.b.toString(16);
   }  
   cp.setHEX = function(hex_str){
-    var str = hex_str.replace(/^#/,'');
-    if(str.length==3){
-      str = str[0]+str[0]+str[1]+str[1]+str[2]+str[2];
-    }
-    var r = parseInt((str[0]+str[1]),16);
-    var g = parseInt((str[2]+str[3]),16);
-    var b = parseInt((str[4]+str[5]),16);
-    var rgb ={"r":parseFloat(r==null?c_data.r:r),"g":parseFloat(g==null?c_data.g:g),"b":parseFloat(b==null?c_data.b:b)}
-    c_data = Object.assign(c_data,rgb);
+    c_data = cp.parseColorString(hex_str);
     var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
     c_data = Object.assign(c_data,hsl);      
     _sync('hex')
@@ -269,8 +275,42 @@ var ColorPallet = function(){
     _sync()
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
+  cp.setDefColor = function(defColor){
+    for(var i=0,m=defColor.length;i<m;i++){
+      def_color.push(cp.parseColorString(defColor[i]))  
+    } 
+  }
   cp.toString = function(){
     return JSON.stringify(c_data);
+  }
+  cp.parseColorString = function(i_str){
+    var str = i_str.toLowerCase().trim().replace(/\s/g,'');
+    var c_data =  {h:0,s:0,l:0,r:0,g:0,b:0}
+    if(str.indexOf('rgb')===0){
+      str = str.replace(/(^rgb|[^\d,])/g,'');
+      var t = str.split(',');
+      var rgb ={"r":parseInt(t[0]),"g":parseInt(t[1]),"b":parseInt(t[2])}
+      var hsl = rgb2hsl(rgb.r,rgb.g,rgb.b);
+      c_data = Object.assign(c_data,rgb,hsl);
+    }else if(str.indexOf('hsl')===0){
+      str = str.replace(/(^hsl|[^\d,])/g,'');
+      var t = str.split(',');
+      var hsl ={"h":parseInt(t[0]),"s":parseInt(t[1]),"l":parseInt(t[2])}
+      var rgb = hsl2rgb(hsl.h,hsl.s,hsl.l);
+      c_data = Object.assign(c_data,rgb,hsl);
+    }else if(str.indexOf('#')===0){
+      str = str.replace(/^#/,'');
+      if(str.length==3){
+        str = str[0]+str[0]+str[1]+str[1]+str[2]+str[2];
+      }
+      var r = parseInt((str[0]+str[1]),16);
+      var g = parseInt((str[2]+str[3]),16);
+      var b = parseInt((str[4]+str[5]),16);
+      var rgb ={"r":r,"g":g,"b":b}
+      var hsl = rgb2hsl(rgb.r,rgb.g,rgb.b);
+      c_data = Object.assign(c_data,rgb,hsl);
+    }
+    return c_data
   }
   cp.confirm = function(){
     btn_curr.style.backgroundColor=cp.toStringRGB();
@@ -334,10 +374,21 @@ var ColorPallet = function(){
   tab_history.addEventListener("click",function(evt){
     var target = evt.target;
     if(!target.c_data){return;}
+    cp.setData(target.c_data);
+    _sync();
   });
+  tab_history.addEventListener("dblclick",function(evt){
+    var target = evt.target;
+    if(!target.c_data){return;}
+    cp.setData(target.c_data);
+    _sync();
+    cp.confirm();
+  });
+  
   /* 내용 초기화 */
   _sync();
   btn_curr.style.backgroundColor=cp.toStringRGB();
+  cp.setDefColor(opt.defColor?opt.defColor:[]);
   initHistoryFromLS();
   
   
