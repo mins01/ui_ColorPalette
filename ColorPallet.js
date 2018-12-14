@@ -336,7 +336,7 @@ var ColorPallet = function(i_opt){
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
   /**
-  * toStringHSL 색을 HSL(111,99%,99%) 로 나타냄
+  * toStringHSL 색을 hsl(111,99%,99%) 로 나타냄
   * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
   * @return {String}
   */
@@ -345,7 +345,7 @@ var ColorPallet = function(i_opt){
     return "hsl("+v_c_data.h.toFixed(0)+","+v_c_data.s.toFixed(0)+"%,"+v_c_data.l.toFixed(0)+"%)";
   }
   /**
-  * toStringRGB 색을 RGB(111,222,99) 로 나타냄
+  * toStringRGB 색을 rgb(111,222,99) 로 나타냄
   * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
   * @return {String}
   */

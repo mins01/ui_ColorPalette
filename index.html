@@ -43,7 +43,7 @@
 	window.addEventListener('load',function(evt){
 		
 		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
-		InputRangeBox.onload(cp);
+		InputRangeBox.autoInit(cp);
 		document.body.appendChild(cp);
 		cp.addEventListener('change',function(evt){
 			console.log(evt.type)
@@ -64,20 +64,48 @@
 	<div class="container">
 		<h1>ColorPallet</h1>
 		<code>
-		<h2>create</h2>
-		<ul>
-			<li>
-				var cp = ColorPallet(opt);<br />
-				@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수}<br />
-				@return html_node cp<br />
-			</li>
-			<li>ex <br />
+			<h2>create</h2>
+			<ul>
+				<li>
+					var cp:html_node = ColorPallet(opt);<br />
+					@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수}<br />
+					@return cp:html_node tag div <br />
+				</li>
+				<li>ex <br />
 					var cp = ColorPallet({bookmark:["#abc","#369"],"maxHistory":10});<br />
-					InputRangeBox.onload(cp); //옵션 <br />
+					InputRangeBox.autoInit(cp); //옵션 <br />
 					document.body.appendChild(cp); //옵션<br />
-				
-			</li>
-		</ul>
+					
+				</li>
+			</ul>
+			<h2>method</h2>
+			<ul>
+				<li>colorData:Object = cp.getData() 컬러 데이터 가져오기</li>
+				<li>cp.setData(colorData:Object) 컬러 데이터 설정하기</li>
+				<li>stringHSL:String = cp.toStringHSL([colorData:Object]) 색을 hsl(111,99%,99%) 로 나타냄</li>
+				<li>stringRGB:String = cp.toStringRGB([colorData:Object]) 색을 rgb(111,222,99) 로 나타냄</li>
+				<li>stringHEX:String = cp.toStringHEX([colorData:Object]) 색을 #aabbcc 로 나타냄</li>
+				<li>cp.setHEX(HEX:String) HEX로 값을 설정</li>
+				<li>cp.setHSL(h:Number,s:Number,l:Number)hsl 값으로 설정</li>
+				<li>cp.setRGB(r:Number,g:Number,b:Number)rgb 값으로 설정</li>
+				<li>stringJSON:String = cp.toString() 컬러 데이터를 JSON 문자열로(ex:{"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}) 출력 </li>
+				<li>colorData:Object = cp.parseColorString(colorString:String) 컬러 문자열을 컬레 데이터로 변환</li>
+				<li>cp.confirm() confirm 동작. confirm 이벤트가 발생됨</li>
+				<li>cp.cancel() cancel 동작. cancel 이벤트가 발생됨</li>
+			</ul>
+			<h2>참고</h2>
+			<ul>
+				<li>colorData:Object 모양 {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}</li>
+				<li>stringHSL:String 모양 hsl(111,99%,99%)</li>
+				<li>stringRGB:String 모양 rgb(111,222,99)</li>
+				<li>stringHEX:String 모양 #aabbcc</li>
+			</ul>
+			<h2>custom event</h2>
+			<ul>
+				<li>change : 색 변경 이벤트</li>
+				<li>confirm : 색 선택 이벤트</li>
+				<li>cancel : 색 선택 취소 이벤트</li>
+			</ul>
 		</code>
 		<hr />
 	</div>
