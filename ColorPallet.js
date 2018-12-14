@@ -5,22 +5,79 @@
 */
 
 var ColorPallet = function(i_opt){
-  var opt = Object.assign({"def_colors":[]},i_opt?i_opt:{});
-  /* 모영 초기화 */
-  // var cp = document.createElement('div');
-  // cp.innerHTML = '<div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" >'+
-  // '<div class="colorPallet-sl">'+
-  // '<div class="colorPallet-range colorPallet-range-s"></div>'+
-  // '<div class="colorPallet-range colorPallet-range-l"></div>'+
-  // '<div class="colorPallet-range-bar colorPallet-range-bar-s"></div>'+
-  // '<div class="colorPallet-range-bar colorPallet-range-bar-l"></div>'+
-  // '</div>'+
-  // '<div class="colorPallet-h ColorPallet-h-landscape" width="50" height="300">'+
-  // '<div class="colorPallet-range colorPallet-range-h"></div>'+
-  // '<div class="colorPallet-range-bar colorPallet-range-bar-h"></div>'+
-  // '</div>'+
-  // '</div>';
-  var cp = document.getElementById("test");
+  /* === 옵션 초기화 === */
+  var opt = Object.assign({"defColor":"#000000","bookmark":[],"maxHistory":10},i_opt?i_opt:{});
+  
+  /* === 기본 노트 생성 === */
+  
+  var innerHTML = '<div class="colorPallet"> \
+  <div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" > \
+  <div class="colorPallet-box colorPallet-box-sl"> \
+  <div class="colorPallet-range colorPallet-range-s colorPallet-bg-h"></div> \
+  <div class="colorPallet-range colorPallet-range-l"></div> \
+  <div class="colorPallet-bar colorPallet-bar-s"></div> \
+  <div class="colorPallet-bar colorPallet-bar-l"></div>					 \
+  </div> \
+  <div class="colorPallet-box colorPallet-box-h ColorPallet-h-landscape" width="50" height="300"> \
+  <div class="colorPallet-range colorPallet-range-h"></div> \
+  <div class="colorPallet-bar colorPallet-bar-h"></div> \
+  </div> \
+  </div> \
+  <div  class="colorPallet-tab colorPallet-tab-info"> \
+  <div class="colorPallet-box colorPallet-box-hsl"> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="H " data-suffix="°" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-h" type="range" min="0" max="360" step="1"  /> \
+  </div> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="S " data-suffix="%" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-s" type="range" min="0" max="100" step="1"  /> \
+  </div> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="L " data-suffix="%" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-l" type="range" min="0" max="100" step="1"  /> \
+  </div> \
+  </div> \
+  <div class="colorPallet-box colorPallet-box-rgb"> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="R " data-suffix="" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-r" type="range" min="0" max="255" step="1"  /> \
+  </div> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="G " data-suffix="" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-g" type="range" min="0" max="255" step="1"  /> \
+  </div> \
+  <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="B " data-suffix="" style="width:100%;"> \
+  <input class="colorPallet-text colorPallet-text-b" type="range" min="0" max="255" step="1"  /> \
+  </div> \
+  </div> \
+  <div class="colorPallet-box colorPallet-box-colorString"> \
+  <dl> \
+  <dt>HSL</dt> \
+  <dd><input class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd> \
+  </dl> \
+  <dl> \
+  <dt>RGB</dt> \
+  <dd><input class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd> \
+  </dl> \
+  <dl> \
+  <dt>HEX</dt> \
+  <dd><input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	</dd> \
+  </dl> \
+  </div> \
+  <div class="colorPallet-box colorPallet-box-btns"> \
+  <button type="button" class="colorPallet-btn colorPallet-btn-curr colorPallet-bg-color-curr"></button> \
+  <button type="button" class="colorPallet-btn colorPallet-btn-new colorPallet-bg-color-new"></button> \
+  <button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button> \
+  <button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button> \
+  </div> \
+  </div> \
+  <div class="colorPallet-tab colorPallet-tab-colors"> \
+  <div class="colorPallet-history"> \
+  </div> \
+  </div> \
+  </div>';
+  
+  // var cp = document.getElementById("test");
+  var div = document.createElement('div');
+  div.innerHTML = innerHTML;
+  var cp = div.querySelector(".colorPallet");
+  div = null;
   var tab_hsl = cp.querySelector(".colorPallet-tab-hsl");
   var tab_colors = cp.querySelector(".colorPallet-tab-colors");
   var box_sl = cp.querySelector(".colorPallet-box-sl");
@@ -49,12 +106,12 @@ var ColorPallet = function(i_opt){
   var bg_color_new = cp.querySelectorAll(".colorPallet-bg-color-new");
   
   var cp_history = [];
-  var def_colors =[];
-  var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}
+  var bookmark =[];
+  var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}  
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
   bar_h.style.top=0;  bar_h.style.left=0;
-  /* 기본 프라이빗 함수 */
+  /* === 프라이빗 메소드 === */
   var _getXY = function(evt){
     var x = evt.clientX;
     var y = evt.clientY;
@@ -159,7 +216,7 @@ var ColorPallet = function(i_opt){
   function addColorHistory(i_c_data){    
     var stringRGB = cp.toStringRGB(i_c_data);
     if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})
-    && !def_colors.find(function(v){return stringRGB==cp.toStringRGB(v);})){
+    && !bookmark.find(function(v){return stringRGB==cp.toStringRGB(v);})){
       cp_history.push(Object.assign({},i_c_data));  
       showHistory();
     }
@@ -178,30 +235,32 @@ var ColorPallet = function(i_opt){
   }
   function showHistory(){
     tab_colors.innerHTML = "";
-    var maxHistory = cp.getAttribute('data-maxHistory');
-    maxHistory= (maxHistory==null)?10:parseInt(maxHistory,10);
+    var maxHistory = parseInt(opt.maxHistory);
     if(cp_history.length > maxHistory){
       cp_history.splice(0,cp_history.length-maxHistory);
     }
     saveHistoryToLS()
-    for(var i=0,m=def_colors.length;i<m;i++){
-      var i_c_data= def_colors[i];
-      var his = document.createElement('button');
-      his.className="colorPallet-defColor"
+    var his,i_c_data,stringHEX;
+    for(var i=0,m=bookmark.length;i<m;i++){
+      i_c_data= bookmark[i];
+      his = document.createElement('button');
+      his.className="colorPallet-color colorPallet-bookmark"
       his.type = "button";
       his.c_data = Object.assign({},i_c_data);
-      var stringRGB = cp.toStringRGB(his.c_data);
-      his.style.backgroundColor = stringRGB;
+      stringHEX = cp.toStringHEX(his.c_data);
+      his.style.backgroundColor = stringHEX;
+      his.setAttribute('data-stringHEX',stringHEX);
       tab_colors.appendChild(his);  
     }   
     for(var i=0,m=cp_history.length;i<m;i++){
-      var i_c_data= cp_history[i];
-      var his = document.createElement('button');
-      his.className="colorPallet-history"
+      i_c_data= cp_history[i];
+      his = document.createElement('button');
+      his.className="colorPallet-color colorPallet-history"
       his.type = "button";
       his.c_data = Object.assign({},i_c_data);
-      var stringRGB = cp.toStringRGB(his.c_data);
-      his.style.backgroundColor = stringRGB;
+      stringHEX = cp.toStringHEX(his.c_data);
+      his.style.backgroundColor = stringHEX;
+      his.setAttribute('data-stringHEX',stringHEX);
       tab_colors.appendChild(his);  
     }    
   }
@@ -212,6 +271,9 @@ var ColorPallet = function(i_opt){
     for(var i=0,m=bg_h.length;i<m;i++){
       bg_h[i].style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
     }
+    text_s.style.backgroundColor="hsl("+c_data.h+", 100%, "+c_data.l+"%)"
+    text_l.style.backgroundColor="hsl("+c_data.h+", 100%, "+c_data.l+"%)"
+    
     for(var i=0,m=bg_color_new.length;i<m;i++){
       bg_color_new[i].style.backgroundColor=cp.toStringHEX();
       bg_color_new[i].c_data = Object.assign({},c_data);
@@ -241,43 +303,80 @@ var ColorPallet = function(i_opt){
     }
     text_rgb.value = cp.toStringRGB();
     text_hsl.value = cp.toStringHSL();
-    // console.log(cp.toStringHSL(),cp.toStringRGB());
-    // document.body.style.backgroundColor=cp.toStringHSL();
+    var stringHEX = cp.toStringHEX();
+    /* 즐겨찾기에서 선택 색 표시 */
+    var t = cp.querySelector('.colorPallet-tab-colors .colorPallet-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
+    if(t) t.removeAttribute('data-selected');
+    var t = cp.querySelector('.colorPallet-tab-colors .colorPallet-color[data-stringHEX="'+stringHEX+'"]');
+    if(t) t.setAttribute('data-selected',true);
+    
+    
+    
   }
-  /* 퍼블릭 메소드 */
-  cp.show = function(){
-    this.style.display='block';
+  var setBookmark = function(defColor){
+    for(var i=0,m=defColor.length;i<m;i++){
+      bookmark.push(cp.parseColorString(defColor[i]))  
+    } 
   }
-  cp.hide = function(){
-    this.style.display='none';
-  }
+  /* === 퍼블릭 메소드 === */
+  /**
+  * getData 컬러 데이터 가져오기
+  * @return {Object} 컬러 데이터
+  */
   cp.getData = function(){
     return Object.assign({},c_data);;
   }
+  /**
+  * setData 컬러 데이터 설정하기
+  * @param  {Object} data 컬러 데이터
+  */
   cp.setData = function(data){
     c_data = Object.assign(c_data,data);
     _sync();
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
+  /**
+  * toStringHSL 색을 HSL(111,99%,99%) 로 나타냄
+  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
+  * @return {String}
+  */
   cp.toStringHSL = function(i_c_data){
     var v_c_data = i_c_data?i_c_data:c_data;
     return "hsl("+v_c_data.h.toFixed(0)+","+v_c_data.s.toFixed(0)+"%,"+v_c_data.l.toFixed(0)+"%)";
   }
+  /**
+  * toStringRGB 색을 RGB(111,222,99) 로 나타냄
+  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
+  * @return {String}
+  */
   cp.toStringRGB = function(i_c_data){
     var v_c_data = i_c_data?i_c_data:c_data;
     return "rgb("+v_c_data.r.toFixed(0)+","+v_c_data.g.toFixed(0)+","+v_c_data.b.toFixed(0)+")";
   }
+  /**
+  * toStringHEX 색을 #aabbcc 로 나타냄
+  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
+  * @return {String}
+  */
   cp.toStringHEX = function(i_c_data){
     var v_c_data = i_c_data?i_c_data:c_data;
     return '#'+((v_c_data.r.toFixed(0)<16)?'0':'')+v_c_data.r.toString(16)+((v_c_data.g.toFixed(0)<16)?'0':'')+v_c_data.g.toString(16)+((v_c_data.b.toFixed(0)<16)?'0':'')+v_c_data.b.toString(16);
-  }  
+  }
+  /**
+  * setHEX HEX로 값을 설정
+  * @param  {String} #aabbcc
+  */
   cp.setHEX = function(hex_str){
     c_data = cp.parseColorString(hex_str);
-    var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
-    c_data = Object.assign(c_data,hsl);      
     _sync('hex')
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
+  /**
+  * setHSL hsl 값으로 설정
+  * @param  {Number} h 0~360
+  * @param  {Number} s 0~100%
+  * @param  {Number} l 0~100%
+  */
   cp.setHSL = function(h,s,l){
     var hsl ={"h":parseFloat(h==null?c_data.h:h),"s":parseFloat(s==null?c_data.s:s),"l":parseFloat(s==null?c_data.l:l)}
     c_data = Object.assign(c_data,hsl);
@@ -286,6 +385,12 @@ var ColorPallet = function(i_opt){
     _sync();
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
+  /**
+  * setRGB rgb 값으로 설정
+  * @param  {Number} r 0~255
+  * @param  {Number} g 0~255
+  * @param  {Number} b 0~255
+  */
   cp.setRGB = function(r,g,b){
     var rgb ={"r":parseFloat(r==null?c_data.r:r),"g":parseFloat(g==null?c_data.g:g),"b":parseFloat(b==null?c_data.b:b)}
     c_data = Object.assign(c_data,rgb);
@@ -294,14 +399,19 @@ var ColorPallet = function(i_opt){
     _sync()
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
-  cp.setDefColors = function(defColor){
-    for(var i=0,m=defColor.length;i<m;i++){
-      def_colors.push(cp.parseColorString(defColor[i]))  
-    } 
-  }
+  /**
+  * toString 컬러 데이터를 JSON 으로 출력 
+  * @return {String} {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}
+  
+  */
   cp.toString = function(){
     return JSON.stringify(c_data);
   }
+  /**
+  * parseColorString 컬러 문자열을 컬레 데이터로 변환
+  * @param  {String} i_str rgb(1,2,3) or hsl(1,2%,3%) or #112233
+  * @return {Object} {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}
+  */
   cp.parseColorString = function(i_str){
     var str = i_str.toLowerCase().trim().replace(/\s/g,'');
     var c_data =  {h:0,s:0,l:0,r:0,g:0,b:0}
@@ -331,19 +441,29 @@ var ColorPallet = function(i_opt){
     }
     return c_data
   }
+  /**
+  * confirm confirm 동작
+  * confirm 이벤트가 발생됨
+  */
   cp.confirm = function(){
     for(var i=0,m=bg_color_curr.length;i<m;i++){
       bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
       bg_color_curr[i].c_data = Object.assign({},c_data);
     }
     addColorHistory(c_data)
+    _sync();
     cp.dispatchEvent((new CustomEvent("confirm", {})));
   }
+  /**
+  * cancel cancel 동작
+  * cancel 이벤트가 발생됨
+  */
   cp.cancel = function(){
     cp.setData(btn_curr.c_data);
+    _sync();
     cp.dispatchEvent((new CustomEvent("cancel", {})));
   }
-  /* 이벤트 초기화 부분   */
+  /* === 이벤트 초기화 부분  ====  */
   var cb_for_h=function(evt,gapX,gapY,target,data){
     // if(gapX==0){return;}
     var bcr = target.getBoundingClientRect();
@@ -407,14 +527,16 @@ var ColorPallet = function(i_opt){
     cp.confirm();
   });
   
-  /* 내용 초기화 */
+  /* === 내용 초기화 === */
+  c_data = cp.parseColorString(opt.defColor);
   _sync();
-  btn_curr.style.backgroundColor=cp.toStringRGB();
+  btn_curr.style.backgroundColor=cp.toStringHEX();
   for(var i=0,m=bg_color_curr.length;i<m;i++){
     bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
     bg_color_curr[i].c_data = Object.assign({},c_data);
   }
-  cp.setDefColors(opt.defColor?opt.defColor:[]);
+
+  setBookmark(opt.bookmark);
   initHistoryFromLS();
   
   

@@ -167,7 +167,7 @@
 	background: linear-gradient(to left, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%);
 }
 .colorPallet-text-r{
-	background: linear-gradient(to right, rgba(255,0,0,0) 0%, rgb(255,0,0,1) 100%)
+	background: linear-gradient(to right, rgba(255,127,127,0) 0%, rgb(255,0,0,1) 100%)
 }
 .colorPallet-text-g{
 	background: linear-gradient(to right, rgba(0,255,0,0) 0%, rgb(0,255,0,1) 100%)
@@ -200,19 +200,29 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 .colorPallet-tab-info .inputRangeBox{
 	margin:0 0.2em;
 }
+.colorPallet-tab-info .inputRangeBox::before{
+	text-shadow: 1px 1px 0px #fff;	
+}
+
 
 
 /* 히스토리 */
-.colorPallet-history ,
-.colorPallet-defColor{
+.colorPallet-color{
 	display: inline-block;
 	width:2em;height: 2em;
 	margin:5px; padding:0;
 	position: relative;
 	border-width: 0;
 }
-
-.colorPallet-defColor::after{
+.colorPallet-color[data-selected]::after{
+	position: absolute;
+	top:0px; left:0px;
+	bottom: 0px; right: 0px;
+	content: "✔️";
+	justify-content: center;  /* 가로 중앙 */
+	align-items: center; /* 세로 중앙 */
+}
+.colorPallet-bookmark::before{
 	content: "📎fix";font-size: 8px;
 	position: absolute;bottom: 1px; right: 1px;
 	color: #333;
@@ -242,4 +252,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	
 	border: 1px dashed #999;
 	border-width: 2px 0 2px 0;
+}
+.colorPallet-tab-colors:empty{
+	display: none;
 }

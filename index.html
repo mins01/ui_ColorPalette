@@ -41,8 +41,10 @@
 	<script>
 	var cp;
 	window.addEventListener('load',function(evt){
-		InputRangeBox.onload();
-		cp = ColorPallet({defColors:["#abc","#369"]});
+		
+		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
+		InputRangeBox.onload(cp);
+		document.body.appendChild(cp);
 		cp.addEventListener('change',function(evt){
 			console.log(evt.type)
 		})
@@ -61,69 +63,23 @@
 <body>
 	<div class="container">
 		<h1>ColorPallet</h1>
-		<div class="colorPallet" data-maxHistory="40" id="test">
-			<div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" >
-				<div class="colorPallet-box colorPallet-box-sl">
-					<div class="colorPallet-range colorPallet-range-s colorPallet-bg-h"></div>
-					<div class="colorPallet-range colorPallet-range-l"></div>
-					<div class="colorPallet-bar colorPallet-bar-s"></div>
-					<div class="colorPallet-bar colorPallet-bar-l"></div>					
-				</div>
-				<div class="colorPallet-box colorPallet-box-h ColorPallet-h-landscape" width="50" height="300">
-					<div class="colorPallet-range colorPallet-range-h"></div>
-					<div class="colorPallet-bar colorPallet-bar-h"></div>
-				</div>
-			</div>
-			<div  class="colorPallet-tab colorPallet-tab-info">
+		<code>
+		<h2>create</h2>
+		<ul>
+			<li>
+				var cp = ColorPallet(opt);<br />
+				@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수}<br />
+				@return html_node cp<br />
+			</li>
+			<li>ex <br />
+					var cp = ColorPallet({bookmark:["#abc","#369"],"maxHistory":10});<br />
+					InputRangeBox.onload(cp); //옵션 <br />
+					document.body.appendChild(cp); //옵션<br />
 				
-				<div class="colorPallet-box colorPallet-box-hsl">
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="H " data-suffix="" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-h" type="range" min="0" max="360" step="1"  />
-					</div>
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="S " data-suffix="%" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-s  colorPallet-bg-h" type="range" min="0" max="100" step="1"  />
-					</div>
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="L " data-suffix="%" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-l" type="range" min="0" max="100" step="1"  />
-					</div>
-				</div>
-				<div class="colorPallet-box colorPallet-box-rgb">
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="R " data-suffix="" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-r" type="range" min="0" max="255" step="1"  />
-					</div>
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="G " data-suffix="" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-g" type="range" min="0" max="255" step="1"  />
-					</div>
-					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="B " data-suffix="" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-b" type="range" min="0" max="255" step="1"  />
-					</div>
-				</div>
-				<div class="colorPallet-box colorPallet-box-colorString">
-					<dl>
-						<dt>HSL</dt>
-						<dd><input class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd>
-					</dl>
-					<dl>
-						<dt>RGB</dt>
-						<dd><input class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd>
-					</dl>
-					<dl>
-						<dt>HEX</dt>
-						<dd><input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	</dd>
-					</dl>
-				</div>
-				<div class="colorPallet-box colorPallet-box-btns">
-					<button type="button" class="colorPallet-btn colorPallet-btn-curr colorPallet-bg-color-curr"></button>
-					<button type="button" class="colorPallet-btn colorPallet-btn-new colorPallet-bg-color-new"></button>
-					<button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button>
-					<button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button>
-				</div>
-			</div>
-			<div class="colorPallet-tab colorPallet-tab-colors">
-				<div class="colorPallet-history">
-					
-				</div>
-			</div>
-		</div>
-	</body>
-	</html>
+			</li>
+		</ul>
+		</code>
+		<hr />
+	</div>
+</body>
+</html>
