@@ -10,7 +10,7 @@ var ColorPallet = function(i_opt){
   
   /* === 기본 노트 생성 === */
   
-  var innerHTML = '<div class="colorPallet"> \
+  var innerHTML = '<div class="colorPallet" translate="no"> \
   <div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" > \
   <div class="colorPallet-box colorPallet-box-sl"> \
   <div class="colorPallet-range colorPallet-range-s colorPallet-bg-h"></div> \
@@ -49,15 +49,15 @@ var ColorPallet = function(i_opt){
   <div class="colorPallet-box colorPallet-box-colorString"> \
   <dl> \
   <dt>HSL</dt> \
-  <dd><input class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd> \
+  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd> \
   </dl> \
   <dl> \
   <dt>RGB</dt> \
-  <dd><input class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd> \
+  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd> \
   </dl> \
   <dl> \
   <dt>HEX</dt> \
-  <dd><input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	</dd> \
+  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-hex" type="text" pattern="^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$" maxlength="7" />	</dd> \
   </dl> \
   </div> \
   <div class="colorPallet-box colorPallet-box-btns"> \
@@ -508,7 +508,21 @@ var ColorPallet = function(i_opt){
   text_r.addEventListener("input",cb_rgb);
   text_g.addEventListener("input",cb_rgb);
   text_b.addEventListener("input",cb_rgb);
-  var cb_hex = function(evt){cp.setHEX(text_hex.value)}
+  var cb_hex = function(evt){
+    var reg = new RegExp(this.pattern, "");
+    if (reg.test(this.value)) {
+      // The ZIP follows the constraint, we use the ConstraintAPI to tell it
+      this.setCustomValidity("");
+    }else{
+      this.setCustomValidity("HEX TYPE : #0cA9fF or #09f")
+      console.log("HEX TYPE : #0cA9fF or #09f");
+    }
+    if(!this.reportValidity()){    
+      return;
+    }
+    cp.setHEX(this.value)
+    console.log(this.value);
+  }
   text_hex.addEventListener("input",cb_hex);
   var cb_confirm = function(evt){cp.confirm()}
   btn_confirm.addEventListener("click",cb_confirm);

@@ -195,6 +195,9 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	border-width:0;
 	border-bottom: 1px solid #ccc;
 }
+.colorPallet-text-hex:invalid{
+	text-decoration: line-through;
+}
 .colorPallet-box-btns >*{
 	width: 100%;
 }
