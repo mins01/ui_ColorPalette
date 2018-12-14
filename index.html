@@ -42,7 +42,7 @@
 	var cp;
 	window.addEventListener('load',function(evt){
 		InputRangeBox.onload();
-		cp = ColorPallet({defColor:["#abc","#369"]});
+		cp = ColorPallet({defColors:["#abc","#369"]});
 		cp.addEventListener('change',function(evt){
 			console.log(evt.type)
 		})
@@ -109,7 +109,7 @@
 					<button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button>
 				</div>
 			</div>
-			<div class="colorPallet-tab colorPallet-tab-history">
+			<div class="colorPallet-tab colorPallet-tab-colors">
 				<div class="colorPallet-history">
 					
 				</div>

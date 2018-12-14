@@ -5,7 +5,7 @@
 */
 
 var ColorPallet = function(i_opt){
-  var opt = Object.assign({"def_color":[]},i_opt?i_opt:{});
+  var opt = Object.assign({"def_colors":[]},i_opt?i_opt:{});
   /* 모영 초기화 */
   // var cp = document.createElement('div');
   // cp.innerHTML = '<div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" >'+
@@ -22,7 +22,7 @@ var ColorPallet = function(i_opt){
   // '</div>';
   var cp = document.getElementById("test");
   var tab_hsl = cp.querySelector(".colorPallet-tab-hsl");
-  var tab_history = cp.querySelector(".colorPallet-tab-history");
+  var tab_colors = cp.querySelector(".colorPallet-tab-colors");
   var box_sl = cp.querySelector(".colorPallet-box-sl");
   var box_h = cp.querySelector(".colorPallet-box-h");
   var range_s = cp.querySelector(".colorPallet-range-s");
@@ -47,7 +47,7 @@ var ColorPallet = function(i_opt){
   var bg_color_new = cp.querySelectorAll(".colorPallet-bg-color-new");
   
   var cp_history = [];
-  var def_color =[];
+  var def_colors =[];
   var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
@@ -157,7 +157,7 @@ var ColorPallet = function(i_opt){
   function addColorHistory(i_c_data){    
     var stringRGB = cp.toStringRGB(i_c_data);
     if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})
-    && !def_color.find(function(v){return stringRGB==cp.toStringRGB(v);})){
+    && !def_colors.find(function(v){return stringRGB==cp.toStringRGB(v);})){
       cp_history.push(Object.assign({},i_c_data));  
       showHistory();
     }
@@ -175,30 +175,32 @@ var ColorPallet = function(i_opt){
     showHistory();
   }
   function showHistory(){
-    tab_history.innerHTML = "";
+    tab_colors.innerHTML = "";
     var maxHistory = cp.getAttribute('data-maxHistory');
     maxHistory= (maxHistory==null)?10:parseInt(maxHistory,10);
     if(cp_history.length > maxHistory){
       cp_history.splice(0,cp_history.length-maxHistory);
     }
     saveHistoryToLS()
-    for(var i=0,m=def_color.length;i<m;i++){
-      var i_c_data= def_color[i];
-      var his = document.createElement('div');
+    for(var i=0,m=def_colors.length;i<m;i++){
+      var i_c_data= def_colors[i];
+      var his = document.createElement('button');
       his.className="colorPallet-defColor"
+      his.type = "button";
       his.c_data = Object.assign({},i_c_data);
       var stringRGB = cp.toStringRGB(his.c_data);
       his.style.backgroundColor = stringRGB;
-      tab_history.appendChild(his);  
+      tab_colors.appendChild(his);  
     }   
     for(var i=0,m=cp_history.length;i<m;i++){
       var i_c_data= cp_history[i];
-      var his = document.createElement('div');
+      var his = document.createElement('button');
       his.className="colorPallet-history"
+      his.type = "button";
       his.c_data = Object.assign({},i_c_data);
       var stringRGB = cp.toStringRGB(his.c_data);
       his.style.backgroundColor = stringRGB;
-      tab_history.appendChild(his);  
+      tab_colors.appendChild(his);  
     }    
   }
   var _sync = function(byInput){
@@ -288,9 +290,9 @@ var ColorPallet = function(i_opt){
     _sync()
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
-  cp.setDefColor = function(defColor){
+  cp.setDefColors = function(defColor){
     for(var i=0,m=defColor.length;i<m;i++){
-      def_color.push(cp.parseColorString(defColor[i]))  
+      def_colors.push(cp.parseColorString(defColor[i]))  
     } 
   }
   cp.toString = function(){
@@ -334,6 +336,7 @@ var ColorPallet = function(i_opt){
     cp.dispatchEvent((new CustomEvent("confirm", {})));
   }
   cp.cancel = function(){
+    cp.setData(btn_curr.c_data);
     cp.dispatchEvent((new CustomEvent("cancel", {})));
   }
   /* 이벤트 초기화 부분   */
@@ -386,13 +389,13 @@ var ColorPallet = function(i_opt){
   var cb_curr = function(evt){cp.setData(this.c_data);}
   btn_curr.addEventListener("click",cb_curr);
   // btn_new.addEventListener("click",cb_curr);
-  tab_history.addEventListener("click",function(evt){
+  tab_colors.addEventListener("click",function(evt){
     var target = evt.target;
     if(!target.c_data){return;}
     cp.setData(target.c_data);
     _sync();
   });
-  tab_history.addEventListener("dblclick",function(evt){
+  tab_colors.addEventListener("dblclick",function(evt){
     var target = evt.target;
     if(!target.c_data){return;}
     cp.setData(target.c_data);
@@ -403,7 +406,11 @@ var ColorPallet = function(i_opt){
   /* 내용 초기화 */
   _sync();
   btn_curr.style.backgroundColor=cp.toStringRGB();
-  cp.setDefColor(opt.defColor?opt.defColor:[]);
+  for(var i=0,m=bg_color_curr.length;i<m;i++){
+    bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
+    bg_color_curr[i].c_data = Object.assign({},c_data);
+  }
+  cp.setDefColors(opt.defColor?opt.defColor:[]);
   initHistoryFromLS();
   
   

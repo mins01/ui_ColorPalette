@@ -8,6 +8,7 @@
 .colorPallet{
 	box-sizing: border-box;
 	min-width: 300px;
+	min-height: 400px;
 }
 .colorPallet-tab{
 	position: relative;
@@ -28,7 +29,6 @@
 /* hsl */
 .colorPallet-tab-hsl{
 	display: flex;
-	min-height: 360px
 }
 .colorPallet-tab-hsl::before{
 	position: absolute;
@@ -48,7 +48,6 @@
 .colorPallet-box-sl{
 	position: relative;
 	cursor: crosshair;
-	min-height: 200px;
 	isolation: isolate;
 	flex: 1 0 auto;
 }
@@ -152,6 +151,7 @@
 /* input 텍스트 */
 .colorPallet-text{
 	width:3em;text-align: right;
+	font-size: inherit;
 }
 
 .colorPallet-text-h{
@@ -176,7 +176,7 @@
 	background: linear-gradient(to right, rgba(0,0,255,0) 0%, rgb(0,0,255,1) 100%)
 }
 /* linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%),
-	linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
+linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 
 .colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-hex , .colorPallet-box-btns{
 	display: flex;
@@ -184,8 +184,8 @@
 }
 
 .colorPallet-box-hex{
- display: block;
- text-align: center;	
+	display: block;
+	text-align: center;	
 }
 
 .colorPallet-text-hex{
@@ -206,12 +206,35 @@
 .colorPallet-defColor{
 	display: inline-block;
 	width:2em;height: 2em;
-	margin:5px;
+	margin:5px; padding:0;
 	position: relative;
+	border-width: 0;
 }
 
 .colorPallet-defColor::after{
 	content: "📎fix";font-size: 8px;
 	position: absolute;bottom: 1px; right: 1px;
 	color: #333;
+}
+
+.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-hex{
+	font-size:24px;
+}
+
+/* 세로방향 FLEX */
+.colorPallet{
+	display: flex;flex-direction: column;
+}
+.colorPallet-tab-hsl{
+	flex: 0 1 360px;
+	min-height: auto;
+}
+.colorPallet-tab-info{
+	flex: 0 0 0;
+}
+.colorPallet-tab-colors{
+	flex: 0 1 auto;
+	min-height: 50px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
