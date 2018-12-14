@@ -11,13 +11,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!-- jquery 관련 -->
-	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>   -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>  
 	
 	
 	<!-- 부트스트랩 4 : IE8지원안됨! -->
-	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">  -->
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>  -->
-	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous"> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script> 
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
 	<!-- vue.js -->
 	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 	
@@ -40,11 +40,12 @@
 	<script src="ColorPallet.js"></script>
 	<script>
 	var cp;
+	var $testModal;
 	window.addEventListener('load',function(evt){
 		
 		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
 		InputRangeBox.autoInit(cp);
-		document.body.appendChild(cp);
+		document.getElementById('textDiv').appendChild(cp);
 		cp.addEventListener('change',function(evt){
 			console.log(evt.type)
 		})
@@ -55,12 +56,43 @@
 			console.log(evt.type)
 		})
 		
+		//--- bootstrap modal 연동 샘플 시작
+		$testModal = $("#testModal");
 		
+		cp2 = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
+		InputRangeBox.autoInit(cp2);
+		$testModal.find(".modal-body").html("").append(cp2);
+		cp2.addEventListener("confirm",function(evt){
+			$testModal.modal('hide');
+			var c_data = this.getData();
+			alert("select Color : "+this.toStringHSL(c_data)+" "+this.toStringRGB(c_data)+" "+this.toStringHEX(c_data));
+			$("#testBtn").css("backgroundColor",this.toStringHEX(c_data))
+		})
+		cp2.addEventListener("cancel",function(evt){
+			$testModal.modal('hide');
+		})
+		//--- bootstrap modal 연동 샘플 끝
 	})
 </script>
+<style>
+/* 부트스트랩4 연동 호환용 */
+#testModal .modal-dialog {
+	height: calc(100% - 4rem);
+}
+#testModal .modal-content{
+	height: 100%;
+}
+#testModal .modal-body{
+	height: 50%;
+	padding: 5px;
+}
+#testModal .modal-body .colorPallet{
+	max-height: 100%;
+}
+</style>
 
 </head>
-<body>
+<body style="background-color:#ccc;">
 	<div class="container">
 		<h1>ColorPallet</h1>
 		<code>
@@ -88,6 +120,7 @@
 				<li>cp.setHEX(HEX:String) HEX로 값을 설정</li>
 				<li>cp.setHSL(h:Number,s:Number,l:Number)hsl 값으로 설정</li>
 				<li>cp.setRGB(r:Number,g:Number,b:Number)rgb 값으로 설정</li>
+				<li>cp.setColorString(colorString:String) colorString 값을 설정</li>
 				<li>stringJSON:String = cp.toString() 컬러 데이터를 JSON 문자열로(ex:{"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}) 출력 </li>
 				<li>colorData:Object = cp.parseColorString(colorString:String) 컬러 문자열을 컬레 데이터로 변환</li>
 				<li>cp.confirm() confirm 동작. confirm 이벤트가 발생됨</li>
@@ -108,6 +141,42 @@
 			</ul>
 		</code>
 		<hr />
+		<!-- Button trigger modal -->
+		<button id="testBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal">
+			bootstrap modal samlpe
+		</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('#ff0000')" style="background-color:#ff0000">
+			open #FF0000
+		</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('rgb(100,200,30)')" style="background-color:rgb(100,200,30)">
+			open rgb(100,200,30)
+		</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
+			open hsl(270,50%,25%)
+		</button>
+		<hr />
+		<div id="textDiv">
+			
+		</div>
+	</div>
+	<div id="testModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">color pallet</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>Modal body text goes here.</p>
+				</div>
+				<!-- <div class="modal-footer">
+					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div> -->
+			</div>
+		</div>
 	</div>
 </body>
 </html>

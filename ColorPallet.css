@@ -15,7 +15,7 @@
 }
 
 .colorPallet-range{
-	position: absolute;top:0;right: -1px;bottom: -1px;left: 0;
+	position: absolute;top:0px;right: 0px;bottom: 0px;left: 0px;
 	padding: 0;margin: 0;
 }
 .colorPallet-bar{
@@ -23,7 +23,7 @@
 	pointer-events: none;
 }
 .colorPallet-box{
-	background-color: #fff;
+	/* background-color: #fff; */
 }
 
 /* hsl */
@@ -50,6 +50,7 @@
 	cursor: crosshair;
 	isolation: isolate;
 	flex: 1 0 auto;
+	overflow: hidden;
 }
 .colorPallet-range-s{
 	/* background: linear-gradient(to right bottom, hsl(0, 100%, 100%), hsl(0, 100%, 50%)) !important; */
@@ -77,6 +78,7 @@
 	cursor: crosshair;
 	isolation: isolate; 
 	flex: 0 0 30px;
+	overflow: hidden;
 }
 .colorPallet-range-h{
 	background: linear-gradient(to bottom, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
@@ -91,34 +93,33 @@
 .colorPallet-bar::before{
 	content: "";
 	box-sizing:border-box;
-	border:1px solid #fff;
+	border:1px solid #ccc;
 	pointer-events: none;
 	position: absolute;
 }
 .colorPallet-bar-s{
-	width:1px;overflow: visible;
+	width:2px;overflow: visible;
 	height:100%;
 }
 .colorPallet-bar-s::before{
-	left:-1px;top:-2px;bottom:-2px;right:-1px;
+	left: -2px;top: 0px;bottom: 0px;right: 0px;
+	border-width: 0px 1px 0px 1px;
+	width: 4px;
 }
-.colorPallet-bar-l{
+.colorPallet-bar-l , .colorPallet-bar-h{
 	left:0;top:50%;
-	height:1px;overflow: visible;
+	height:2px;overflow: visible;
 	width:100%;	
 }
-.colorPallet-bar-l::before{
-	left:-2px;top:-1px;bottom:-1px;right:-2px;
+.colorPallet-bar-l::before ,
+.colorPallet-bar-h::before{
+	left: 0px;top: -2px;bottom: 0;right: 0px;
+
+	border-width: 1px 0px 1px 0px;
+
+	height: 4px;
 }
 
-.colorPallet-bar-h{
-	height:1px;overflow: visible;
-	width:100%;
-	
-}
-.colorPallet-bar-h::before{
-	left:-2px;top:-1px;bottom:-1px;right:-2px;
-}
 
 
 
