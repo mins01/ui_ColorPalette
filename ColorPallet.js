@@ -272,7 +272,7 @@ var ColorPallet = function(i_opt){
       bg_h[i].style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
     }
     text_s.style.backgroundColor="hsl("+c_data.h+", 100%, "+c_data.l+"%)"
-    text_l.style.backgroundColor="hsl("+c_data.h+", 100%, "+c_data.l+"%)"
+    text_l.style.backgroundColor="hsl("+c_data.h+", "+c_data.s+"%, 50%)"
     
     for(var i=0,m=bg_color_new.length;i<m;i++){
       bg_color_new[i].style.backgroundColor=cp.toStringHEX();
