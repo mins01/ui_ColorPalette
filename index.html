@@ -64,7 +64,7 @@
 		<div class="colorPallet" data-maxHistory="40" id="test">
 			<div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" >
 				<div class="colorPallet-box colorPallet-box-sl">
-					<div class="colorPallet-range colorPallet-range-s"></div>
+					<div class="colorPallet-range colorPallet-range-s colorPallet-bg-h"></div>
 					<div class="colorPallet-range colorPallet-range-l"></div>
 					<div class="colorPallet-bar colorPallet-bar-s"></div>
 					<div class="colorPallet-bar colorPallet-bar-l"></div>					
@@ -81,7 +81,7 @@
 						<input class="colorPallet-text colorPallet-text-h" type="range" min="0" max="360" step="1"  />
 					</div>
 					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="S " data-suffix="%" style="width:100%;">
-						<input class="colorPallet-text colorPallet-text-s" type="range" min="0" max="100" step="1"  />
+						<input class="colorPallet-text colorPallet-text-s  colorPallet-bg-h" type="range" min="0" max="100" step="1"  />
 					</div>
 					<div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="L " data-suffix="%" style="width:100%;">
 						<input class="colorPallet-text colorPallet-text-l" type="range" min="0" max="100" step="1"  />
@@ -103,8 +103,8 @@
 					<input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	
 				</div>
 				<div class="colorPallet-box colorPallet-box-btns">
-					<button type="button" class="colorPallet-btn colorPallet-btn-curr"></button>
-					<button type="button" class="colorPallet-btn colorPallet-btn-new"></button>
+					<button type="button" class="colorPallet-btn colorPallet-btn-curr colorPallet-bg-color-curr"></button>
+					<button type="button" class="colorPallet-btn colorPallet-btn-new colorPallet-bg-color-new"></button>
 					<button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button>
 					<button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button>
 				</div>

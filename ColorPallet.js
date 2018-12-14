@@ -42,6 +42,10 @@ var ColorPallet = function(i_opt){
   var btn_new = cp.querySelector(".colorPallet-btn-new");
   var btn_confirm = cp.querySelector(".colorPallet-btn-confirm");
   var btn_cancel = cp.querySelector(".colorPallet-btn-cancel");
+  var bg_h = cp.querySelectorAll(".colorPallet-bg-h");
+  var bg_color_curr = cp.querySelectorAll(".colorPallet-bg-color-curr");
+  var bg_color_new = cp.querySelectorAll(".colorPallet-bg-color-new");
+  
   var cp_history = [];
   var def_color =[];
   var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}
@@ -152,7 +156,8 @@ var ColorPallet = function(i_opt){
   }
   function addColorHistory(i_c_data){    
     var stringRGB = cp.toStringRGB(i_c_data);
-    if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})){
+    if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})
+    && !def_color.find(function(v){return stringRGB==cp.toStringRGB(v);})){
       cp_history.push(Object.assign({},i_c_data));  
       showHistory();
     }
@@ -164,6 +169,9 @@ var ColorPallet = function(i_opt){
   }
   function initHistoryFromLS(){
     cp_history = JSON.parse(localStorage.getItem("cp_history"));
+    if(!cp_history){
+      cp_history = [];
+    }
     showHistory();
   }
   function showHistory(){
@@ -177,7 +185,7 @@ var ColorPallet = function(i_opt){
     for(var i=0,m=def_color.length;i<m;i++){
       var i_c_data= def_color[i];
       var his = document.createElement('div');
-      his.className="colorPallet-history"
+      his.className="colorPallet-defColor"
       his.c_data = Object.assign({},i_c_data);
       var stringRGB = cp.toStringRGB(his.c_data);
       his.style.backgroundColor = stringRGB;
@@ -196,9 +204,14 @@ var ColorPallet = function(i_opt){
   var _sync = function(byInput){
     bar_h.style.top=(c_data.h/360)*100+'%';
     // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
-    range_s.style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
-    btn_new.style.backgroundColor=cp.toStringRGB();
-    btn_new.c_data = Object.assign({},c_data);
+    
+    for(var i=0,m=bg_h.length;i<m;i++){
+      bg_h[i].style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
+    }
+    for(var i=0,m=bg_color_new.length;i<m;i++){
+      bg_color_new[i].style.backgroundColor=cp.toStringHEX();
+      bg_color_new[i].c_data = Object.assign({},c_data);
+    }
     bar_s.style.left=c_data.s+'%';
     // var t = (200-c_data.s)/100;
     // bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
@@ -313,8 +326,10 @@ var ColorPallet = function(i_opt){
     return c_data
   }
   cp.confirm = function(){
-    btn_curr.style.backgroundColor=cp.toStringRGB();
-    btn_curr.c_data = Object.assign({},c_data);
+    for(var i=0,m=bg_color_curr.length;i<m;i++){
+      bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
+      bg_color_curr[i].c_data = Object.assign({},c_data);
+    }
     addColorHistory(c_data)
     cp.dispatchEvent((new CustomEvent("confirm", {})));
   }
