@@ -59,7 +59,7 @@
 		//--- bootstrap modal 연동 샘플 시작
 		$testModal = $("#testModal");
 		
-		cp2 = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
+		cp2 = ColorPallet({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40});
 		InputRangeBox.autoInit(cp2);
 		$testModal.find(".modal-body").html("").append(cp2);
 		cp2.addEventListener("confirm",function(evt){
@@ -95,6 +95,13 @@
 <body style="background-color:#ccc;">
 	<div class="container">
 		<h1>ColorPallet</h1>
+		<ul style="word-break:break-all">
+			<li>컬러 파레트</li>
+			<li>jquery, Bootstrap 없이도 동작 가능</li>
+			<li><a href="http://www.mins01.com/mh/tech/read/1218" target="_blank">http://www.mins01.com/mh/tech/read/1218</a></li>
+			<li><a href="https://github.com/mins01/ui_ColorPallet/" target="_blank">https://github.com/mins01/ui_ColorPallet/</a></li>
+			<li><a href="https://mins01.github.io/ui_ColorPallet/" target="_blank">https://mins01.github.io/ui_ColorPallet/</a></li>
+		</ul>
 		<code>
 			<h2>create</h2>
 			<ul>

@@ -279,12 +279,7 @@ var ColorPallet = function(i_opt){
       bg_color_new[i].c_data = Object.assign({},c_data);
     }
     bar_s.style.left=c_data.s+'%';
-    // var t = (200-c_data.s)/100;
-    // bar_l.style.top=(1-(c_data.l/50/t))*100+'%';
     bar_l.style.top=(100-c_data.l)+'%';
-    // tab_hsl.setAttribute('data-h',c_data.h.toFixed(0)+' '+((c_data.h).toFixed(0)/360*255).toFixed(0))
-    // tab_hsl.setAttribute('data-s',c_data.s.toFixed(0)+' '+((c_data.s).toFixed(0)/100*255).toFixed(0))
-    // tab_hsl.setAttribute('data-l',c_data.l.toFixed(0)+' '+((c_data.l).toFixed(0)/100*255).toFixed(0))
     tab_hsl.setAttribute('data-toStringHSL',cp.toStringHSL())
     tab_hsl.setAttribute('data-toStringRGB',cp.toStringRGB())
     tab_hsl.setAttribute('data-toStringHEX',cp.toStringHEX())
@@ -538,15 +533,15 @@ var ColorPallet = function(i_opt){
   
   /* === 내용 초기화 === */
   c_data = cp.parseColorString(opt.defColor);
+  setBookmark(opt.bookmark);
+  initHistoryFromLS();
   _sync();
   btn_curr.style.backgroundColor=cp.toStringHEX();
   for(var i=0,m=bg_color_curr.length;i<m;i++){
     bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
     bg_color_curr[i].c_data = Object.assign({},c_data);
   }
-
-  setBookmark(opt.bookmark);
-  initHistoryFromLS();
+  
   
   
   return cp;
