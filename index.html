@@ -43,7 +43,7 @@
 	var $testModal;
 	window.addEventListener('load',function(evt){
 		
-		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40});
+		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp"});
 		InputRangeBox.autoInit(cp);
 		document.getElementById('textDiv').appendChild(cp);
 		cp.addEventListener('change',function(evt){
@@ -59,7 +59,7 @@
 		//--- bootstrap modal 연동 샘플 시작
 		$testModal = $("#testModal");
 		
-		cp2 = ColorPallet({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40});
+		cp2 = ColorPallet({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp2"});
 		InputRangeBox.autoInit(cp2);
 		$testModal.find(".modal-body").html("").append(cp2);
 		cp2.addEventListener("confirm",function(evt){
@@ -107,11 +107,11 @@
 			<ul>
 				<li>
 					var cp:html_node = ColorPallet(opt);<br />
-					@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수}<br />
+					@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수,"localStorageHistoryKey":히스토리용 키}<br />
 					@return cp:html_node tag div <br />
 				</li>
 				<li>ex <br />
-					var cp = ColorPallet({bookmark:["#abc","#369"],"maxHistory":10});<br />
+					var cp = ColorPallet({bookmark:["#abc","#369"],"maxHistory":10,"localStorageHistoryKey":"save_key"});<br />
 					InputRangeBox.autoInit(cp); //옵션 <br />
 					document.body.appendChild(cp); //옵션<br />
 					

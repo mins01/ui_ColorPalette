@@ -6,7 +6,7 @@
 
 var ColorPallet = function(i_opt){
   /* === 옵션 초기화 === */
-  var opt = Object.assign({"defColor":"#000000","bookmark":[],"maxHistory":10},i_opt?i_opt:{});
+  var opt = Object.assign({"defColor":"#000000","bookmark":[],"maxHistory":10,"localStorageHistoryKey":"ColorPallet-history-key"},i_opt?i_opt:{});
   
   /* === 기본 노트 생성 === */
   
@@ -224,10 +224,10 @@ var ColorPallet = function(i_opt){
     
   }
   function saveHistoryToLS(){
-    localStorage.setItem("cp_history",JSON.stringify(cp_history));
+    localStorage.setItem(opt.localStorageHistoryKey,JSON.stringify(cp_history));
   }
   function initHistoryFromLS(){
-    cp_history = JSON.parse(localStorage.getItem("cp_history"));
+    cp_history = JSON.parse(localStorage.getItem(opt.localStorageHistoryKey));
     if(!cp_history){
       cp_history = [];
     }
