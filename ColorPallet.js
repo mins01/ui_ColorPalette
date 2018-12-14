@@ -37,6 +37,8 @@ var ColorPallet = function(i_opt){
   var text_r = cp.querySelector(".colorPallet-text-r");
   var text_g = cp.querySelector(".colorPallet-text-g");
   var text_b = cp.querySelector(".colorPallet-text-b");
+  var text_hsl = cp.querySelector(".colorPallet-text-hsl");
+  var text_rgb = cp.querySelector(".colorPallet-text-rgb");
   var text_hex = cp.querySelector(".colorPallet-text-hex");
   var btn_curr = cp.querySelector(".colorPallet-btn-curr");
   var btn_new = cp.querySelector(".colorPallet-btn-new");
@@ -237,6 +239,8 @@ var ColorPallet = function(i_opt){
     if(byInput!='hex'){
       text_hex.value = cp.toStringHEX();
     }
+    text_rgb.value = cp.toStringRGB();
+    text_hsl.value = cp.toStringHSL();
     // console.log(cp.toStringHSL(),cp.toStringRGB());
     // document.body.style.backgroundColor=cp.toStringHSL();
   }

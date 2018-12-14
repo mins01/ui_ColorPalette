@@ -98,9 +98,19 @@
 						<input class="colorPallet-text colorPallet-text-b" type="range" min="0" max="255" step="1"  />
 					</div>
 				</div>
-				<div class="colorPallet-box colorPallet-box-hex">
-					<span>HEX</span>
-					<input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	
+				<div class="colorPallet-box colorPallet-box-colorString">
+					<dl>
+						<dt>HSL</dt>
+						<dd><input class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd>
+					</dl>
+					<dl>
+						<dt>RGB</dt>
+						<dd><input class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd>
+					</dl>
+					<dl>
+						<dt>HEX</dt>
+						<dd><input class="colorPallet-text colorPallet-text-hex" type="text" pattern="/#[0-9A-Fa-f]{3,6}/" min="0" max="255" />	</dd>
+					</dl>
 				</div>
 				<div class="colorPallet-box colorPallet-box-btns">
 					<button type="button" class="colorPallet-btn colorPallet-btn-curr colorPallet-bg-color-curr"></button>

@@ -178,17 +178,18 @@
 /* linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%),
 linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 
-.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-hex , .colorPallet-box-btns{
+.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-colorString , .colorPallet-box-btns{
 	display: flex;
 	margin-top:0.5em;
 }
+.colorPallet-box-colorString dl{margin:0; box-sizing: border-box; width: 100%;}
+.colorPallet-box-colorString dt{ font-size: 0.5em; font-weight: bold;padding:0;margin:0;}
+.colorPallet-box-colorString dd{padding:0 0.1em;margin:0;}
+.colorPallet-box-colorString dd input{width:100%;}
+.colorPallet-box-colorString .colorPallet-text-rgb,
+.colorPallet-box-colorString .colorPallet-text-hsl{ color: #999;}
 
-.colorPallet-box-hex{
-	display: block;
-	text-align: center;	
-}
-
-.colorPallet-text-hex{
+.colorPallet-text-hsl,.colorPallet-text-rgb,.colorPallet-text-hex{
 	width:5em; text-align: left; background-color: transparent; 
 	border-width:0;
 	border-bottom: 1px solid #ccc;
@@ -217,7 +218,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	color: #333;
 }
 
-.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-hex{
+.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-colorString{
 	font-size:24px;
 }
 
@@ -231,10 +232,14 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 }
 .colorPallet-tab-info{
 	flex: 0 0 0;
+	margin-bottom:0.5em;
 }
 .colorPallet-tab-colors{
 	flex: 0 1 auto;
 	min-height: 50px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	
+	border: 1px dashed #999;
+	border-width: 2px 0 2px 0;
 }
