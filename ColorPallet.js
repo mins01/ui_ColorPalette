@@ -372,6 +372,15 @@ var ColorPallet = function(i_opt){
     cp.dispatchEvent((new CustomEvent("change", {})));
   }
   /**
+  * setColorString 문자열로 값을 설정
+  * @param  {String} 색상 문자열
+  */
+  cp.setColorString = function(str){
+    c_data = cp.parseColorString(str);
+    _sync()
+    cp.dispatchEvent((new CustomEvent("change", {})));
+  }
+  /**
   * setHSL hsl 값으로 설정
   * @param  {Number} h 0~360
   * @param  {Number} s 0~100%
