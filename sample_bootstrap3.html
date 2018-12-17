@@ -14,10 +14,14 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>  
 	
 	
-	<!-- 부트스트랩 4 : IE8지원안됨! -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous"> 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script> 
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	<!-- 합쳐지고 최소화된 최신 CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- 부가적인 테마 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<!-- Jquery : not support < IE9-->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+	<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<!-- vue.js -->
 	<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 	
@@ -94,63 +98,17 @@
 </style>
 
 </head>
-<body style="background-color:#eee;">
+<body style="background-color:#eee;word-break:break-all">
 	<div class="container">
 		<h1>ColorPallet</h1>
-		<ul style="word-break:break-all">
+		<ul style="">
 			<li>컬러 파레트</li>
 			<li>jquery, Bootstrap 없이도 동작 가능</li>
 			<li><a href="http://www.mins01.com/mh/tech/read/1218" target="_blank">http://www.mins01.com/mh/tech/read/1218</a></li>
 			<li><a href="https://github.com/mins01/ui_ColorPallet/" target="_blank">https://github.com/mins01/ui_ColorPallet/</a></li>
 			<li><a href="https://mins01.github.io/ui_ColorPallet/" target="_blank">https://mins01.github.io/ui_ColorPallet/</a></li>
-			<li><a href="sample_bootstrap3.html" target="_blank">sample_bootstrap3.html</a></li>
-			
 		</ul>
-		<code>
-			<h2>create</h2>
-			<ul>
-				<li>
-					var cp:html_node = ColorPallet(opt);<br />
-					@param Object opt {defColor:기본색,bookmark:즐겨찾기 기본 배열,"maxHistory":최대 히스토리 수,"localStorageHistoryKey":히스토리용 키}<br />
-					@return cp:html_node tag div <br />
-				</li>
-				<li>ex <br />
-					var cp = ColorPallet({bookmark:["#abc","#369"],"maxHistory":10,"localStorageHistoryKey":"save_key"});<br />
-					InputRangeBox.autoInit(cp); //옵션 <br />
-					document.body.appendChild(cp); //옵션<br />
-					
-				</li>
-			</ul>
-			<h2>method</h2>
-			<ul>
-				<li>colorData:Object = cp.getData() 컬러 데이터 가져오기</li>
-				<li>cp.setData(colorData:Object) 컬러 데이터 설정하기</li>
-				<li>stringHSL:String = cp.toStringHSL([colorData:Object]) 색을 hsl(111,99%,99%) 로 나타냄</li>
-				<li>stringRGB:String = cp.toStringRGB([colorData:Object]) 색을 rgb(111,222,99) 로 나타냄</li>
-				<li>stringHEX:String = cp.toStringHEX([colorData:Object]) 색을 #aabbcc 로 나타냄</li>
-				<li>cp.setHEX(HEX:String) HEX로 값을 설정</li>
-				<li>cp.setHSL(h:Number,s:Number,l:Number)hsl 값으로 설정</li>
-				<li>cp.setRGB(r:Number,g:Number,b:Number)rgb 값으로 설정</li>
-				<li>cp.setColorString(colorString:String) colorString 값을 설정</li>
-				<li>stringJSON:String = cp.toString() 컬러 데이터를 JSON 문자열로(ex:{"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}) 출력 </li>
-				<li>colorData:Object = cp.parseColorString(colorString:String) 컬러 문자열을 컬레 데이터로 변환</li>
-				<li>cp.confirm() confirm 동작. confirm 이벤트가 발생됨</li>
-				<li>cp.cancel() cancel 동작. cancel 이벤트가 발생됨</li>
-			</ul>
-			<h2>참고</h2>
-			<ul>
-				<li>colorData:Object 모양 {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}</li>
-				<li>stringHSL:String 모양 hsl(111,99%,99%)</li>
-				<li>stringRGB:String 모양 rgb(111,222,99)</li>
-				<li>stringHEX:String 모양 #aabbcc</li>
-			</ul>
-			<h2>custom event</h2>
-			<ul>
-				<li>change : 색 변경 이벤트</li>
-				<li>confirm : 색 선택 이벤트</li>
-				<li>cancel : 색 선택 취소 이벤트</li>
-			</ul>
-		</code>
+		<h2>sample for bootstrap 3</h2>
 		<hr />
 		<!-- Button trigger modal -->
 		<button id="testBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal">
@@ -169,25 +127,20 @@
 		<div id="textDiv">
 			
 		</div>
+		
 		<div id="testModal" class="modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">color pallet</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Modal title</h4>
 					</div>
 					<div class="modal-body">
-						<p>Modal body text goes here.</p>
+						<p>One fine body&hellip;</p>
 					</div>
-					<!-- <div class="modal-footer">
-						<button type="button" class="btn btn-primary">Save changes</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					</div> -->
-				</div>
-			</div>
-		</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</div>
 	
 </body>
