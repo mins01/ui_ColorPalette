@@ -446,6 +446,26 @@ var ColorPalette = function(i_opt){
     return c_data
   }
   /**
+   * setSelectedColor 선택된 색을 설정한다. confirm과 같지만, 이벤트는 발생 안한다.
+   * @param  {String} colorString [description]
+   */
+  cp.setSelectedColor = function(colorString){
+    var t_c_data = cp.parseColorString(colorString);
+    var toStringHEX = cp.toStringHEX(t_c_data);
+    for(var i=0,m=bg_color_curr.length;i<m;i++){
+      bg_color_curr[i].style.backgroundColor=toStringHEX;
+      bg_color_curr[i].c_data = Object.assign({},t_c_data);
+    }
+    _sync();
+  }
+  /**
+   * getSelectedColor 선택된 색을 가져온다.
+   * @return {Object} ColorData
+   */
+  cp.getSelectedColor = function(){
+    return bg_color_curr.c_data
+  }
+  /**
   * confirm confirm 동작
   * confirm 이벤트가 발생됨
   */
