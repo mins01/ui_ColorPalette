@@ -169,8 +169,8 @@
 			open hsl(270,50%,25%)
 		</button>
 		<hr />
-		setSelectedColor : 선택된 색 변경 <input type="text" oninput="cp.set(this.value)" /><br />
-		getSelectedColor : <button type="button" onclick="alert(cp.toStringHEX(cp.get()))">선택된 데이터 확인</button>
+		setSelectedColor : 선택된 색 변경 <input type="text" oninput="cp.setSelectedColor(this.value)" /><br />
+		getSelectedColor : <button type="button" onclick="alert(cp.toStringHEX(cp.getSelectedColor()))">선택된 데이터 확인</button>
 		<div id="textDiv">
 			
 		</div>

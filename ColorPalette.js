@@ -450,11 +450,15 @@ var ColorPalette = function(i_opt){
    * @param  {String} colorString [description]
    */
   cp.setSelectedColor = function(colorString){
-    var t_c_data = cp.parseColorString(colorString);
-    var toStringHEX = cp.toStringHEX(t_c_data);
+    c_data = cp.parseColorString(colorString);
+    var toStringHEX = cp.toStringHEX(c_data);
+    for(var i=0,m=bg_color_new.length;i<m;i++){
+      bg_color_new[i].style.backgroundColor=toStringHEX
+      bg_color_new[i].c_data = Object.assign({},c_data);
+    }
     for(var i=0,m=bg_color_curr.length;i<m;i++){
       bg_color_curr[i].style.backgroundColor=toStringHEX;
-      bg_color_curr[i].c_data = Object.assign({},t_c_data);
+      bg_color_curr[i].c_data = Object.assign({},c_data);
     }
     _sync();
   }
