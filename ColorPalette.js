@@ -461,13 +461,15 @@ var ColorPalette = function(i_opt){
       bg_color_curr[i].c_data = Object.assign({},c_data);
     }
     _sync();
+    cp.dispatchEvent((new CustomEvent("setselectedcolor", {})));
+
   }
   /**
    * getSelectedColor 선택된 색을 가져온다.
    * @return {Object} ColorData
    */
   cp.getSelectedColor = function(){
-    return bg_color_curr.c_data
+    return Object.assign({},bg_color_curr[0].c_data);
   }
   /**
   * confirm confirm 동작

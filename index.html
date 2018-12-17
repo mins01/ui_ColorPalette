@@ -55,6 +55,10 @@
 		cp.addEventListener('cancel',function(evt){
 			console.log(evt.type)
 		})
+		cp.addEventListener('setselectedcolor',function(evt){
+			console.log(evt.type,this.getSelectedColor())
+		})
+		
 		
 		//--- bootstrap modal 연동 샘플 시작
 		$testModal = $("#testModal");
@@ -152,6 +156,8 @@
 				<li>change : 색 변경 이벤트</li>
 				<li>confirm : 색 선택 이벤트</li>
 				<li>cancel : 색 선택 취소 이벤트</li>
+				<li>setselectedcolor : setSelectedColor 메소드 호출시 발생</li>
+				
 			</ul>
 		</code>
 		<hr />
