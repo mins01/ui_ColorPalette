@@ -1,36 +1,36 @@
 @charset "UTF-8";
 /**
-* ColorPallet
+* colorPalette
 * 컬러 파레트
 * "공대여자는 이쁘다"를 표시기해야 쓸 수 있습니다.
 */
 
-.colorPallet{
+.colorPalette{
 	box-sizing: border-box;
 	min-width: 300px;
 	min-height: 400px;
 }
-.colorPallet-tab{
+.colorPalette-tab{
 	position: relative;
 }
 
-.colorPallet-range{
+.colorPalette-range{
 	position: absolute;top:0px;right: 0px;bottom: 0px;left: 0px;
 	padding: 0;margin: 0;
 }
-.colorPallet-bar{
+.colorPalette-bar{
 	position: absolute;top:0;left:50%; z-index: 10;
 	pointer-events: none;
 }
-.colorPallet-box{
+.colorPalette-box{
 	/* background-color: #fff; */
 }
 
 /* hsl */
-.colorPallet-tab-hsl{
+.colorPalette-tab-hsl{
 	display: flex;
 }
-.colorPallet-tab-hsl::before{
+.colorPalette-tab-hsl::before{
 	position: absolute;
 	text-align: right;
 	content: attr(data-toStringHSL) "\a" attr(data-toStringRGB) "\a" attr(data-toStringHEX) ;
@@ -45,14 +45,14 @@
 	border-radius: 5px;
 	width: 9em;
 }
-.colorPallet-box-sl{
+.colorPalette-box-sl{
 	position: relative;
 	cursor: crosshair;
 	isolation: isolate;
 	flex: 1 0 auto;
 	overflow: hidden;
 }
-.colorPallet-range-s{
+.colorPalette-range-s{
 	/* background: linear-gradient(to right bottom, hsl(0, 100%, 100%), hsl(0, 100%, 50%)) !important; */
 	/* background-color:hsl(0, 100%, 50%); */
 	/* background-image: linear-gradient(to top, #000, hsla(20, 42%, 65%, 0)),linear-gradient(to right, #fff, hsla(20, 42%, 65%, 0)); */
@@ -63,7 +63,7 @@
 	/* mix-blend-mode: multiply; */
 	
 }
-.colorPallet-range-l{
+.colorPalette-range-l{
 	/* mix-blend-mode: multiply; */
 	/* background: linear-gradient(to bottom, hsla(0, 0%, 25%,0), hsla(0, 0%, 0%,1)); */
 	/* background:linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%),
@@ -72,7 +72,7 @@
 	z-index: 2
 }
 
-.colorPallet-box-h{
+.colorPalette-box-h{
 	margin-left: 10px;
 	position: relative;
 	cursor: crosshair;
@@ -80,7 +80,7 @@
 	flex: 0 0 30px;
 	overflow: hidden;
 }
-.colorPallet-range-h{
+.colorPalette-range-h{
 	background: linear-gradient(to bottom, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
 	,hsl(80, 100%, 50%),hsl(100, 100%, 50%),hsl(120, 100%, 50%),hsl(140, 100%, 50%),hsl(160, 100%, 50%),hsl(180, 100%, 50%)
 	,hsl(200, 100%, 50%),hsl(220, 100%, 50%),hsl(240, 100%, 50%),hsl(260, 100%, 50%),hsl(280, 100%, 50%),hsl(300, 100%, 50%)
@@ -89,30 +89,30 @@
 
 
 
-/* colorPallet-bar */
-.colorPallet-bar::before{
+/* colorPalette-bar */
+.colorPalette-bar::before{
 	content: "";
 	box-sizing:border-box;
 	border:1px solid #ccc;
 	pointer-events: none;
 	position: absolute;
 }
-.colorPallet-bar-s{
+.colorPalette-bar-s{
 	width:2px;overflow: visible;
 	height:100%;
 }
-.colorPallet-bar-s::before{
+.colorPalette-bar-s::before{
 	left: -2px;top: 0px;bottom: 0px;right: 0px;
 	border-width: 0px 1px 0px 1px;
 	width: 4px;
 }
-.colorPallet-bar-l , .colorPallet-bar-h{
+.colorPalette-bar-l , .colorPalette-bar-h{
 	left:0;top:50%;
 	height:2px;overflow: visible;
 	width:100%;	
 }
-.colorPallet-bar-l::before ,
-.colorPallet-bar-h::before{
+.colorPalette-bar-l::before ,
+.colorPalette-bar-h::before{
 	left: 0px;top: -2px;bottom: 0;right: 0px;
 
 	border-width: 1px 0px 1px 0px;
@@ -124,7 +124,7 @@
 
 
 /* 버튼 들 */
-.colorPallet-btn{
+.colorPalette-btn{
 	border:0px solid #000;
 	width:3em;
 	height:2em;
@@ -132,93 +132,93 @@
 	vertical-align: top;
 	border-radius: 0.5em;
 }
-.colorPallet-btn:focus{
+.colorPalette-btn:focus{
 	outline-width:0;
 }
-.colorPallet-btn-curr::before{
+.colorPalette-btn-curr::before{
 	content: ""
 }
-.colorPallet-btn-new::before{
+.colorPalette-btn-new::before{
 	content: ""
 }
-.colorPallet-btn-confirm::before{
+.colorPalette-btn-confirm::before{
 	content: "OK"
 }
-.colorPallet-btn-cancel::before{
+.colorPalette-btn-cancel::before{
 	content: "NO"
 }
 
 
 /* input 텍스트 */
-.colorPallet-text{
+.colorPalette-text{
 	width:3em;text-align: right;
 	font-size: inherit;
 }
 
-.colorPallet-text-h{
+.colorPalette-text-h{
 	background: linear-gradient(to right, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
 	,hsl(80, 100%, 50%),hsl(100, 100%, 50%),hsl(120, 100%, 50%),hsl(140, 100%, 50%),hsl(160, 100%, 50%),hsl(180, 100%, 50%)
 	,hsl(200, 100%, 50%),hsl(220, 100%, 50%),hsl(240, 100%, 50%),hsl(260, 100%, 50%),hsl(280, 100%, 50%),hsl(300, 100%, 50%)
 	,hsl(320, 100%, 50%),hsl(340, 100%, 50%),hsl(360, 100%, 50%))
 }
-.colorPallet-text-s{
+.colorPalette-text-s{
 	background: linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%)
 }
-.colorPallet-text-l{
+.colorPalette-text-l{
 	background: linear-gradient(to left, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%);
 }
-.colorPallet-text-r{
+.colorPalette-text-r{
 	background: linear-gradient(to right, rgba(255,127,127,0) 0%, rgb(255,0,0,1) 100%)
 }
-.colorPallet-text-g{
+.colorPalette-text-g{
 	background: linear-gradient(to right, rgba(0,255,0,0) 0%, rgb(0,255,0,1) 100%)
 }
-.colorPallet-text-b{
+.colorPalette-text-b{
 	background: linear-gradient(to right, rgba(0,0,255,0) 0%, rgb(0,0,255,1) 100%)
 }
 /* linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%),
 linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 
-.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-colorString , .colorPallet-box-btns{
+.colorPalette-box-hsl , .colorPalette-box-rgb , .colorPalette-box-colorString , .colorPalette-box-btns{
 	display: flex;
 	margin-top:0.5em;
 }
-.colorPallet-box-colorString dl{margin:0; box-sizing: border-box; width: 100%;}
-.colorPallet-box-colorString dt{ font-size: 0.5em; font-weight: bold;padding:0;margin:0;}
-.colorPallet-box-colorString dd{padding:0 0.1em;margin:0;}
-.colorPallet-box-colorString dd input{width:100%;}
-.colorPallet-box-colorString .colorPallet-text-rgb,
-.colorPallet-box-colorString .colorPallet-text-hsl{ color: #999;}
+.colorPalette-box-colorString dl{margin:0; box-sizing: border-box; width: 100%;}
+.colorPalette-box-colorString dt{ font-size: 0.5em; font-weight: bold;padding:0;margin:0;}
+.colorPalette-box-colorString dd{padding:0 0.1em;margin:0;}
+.colorPalette-box-colorString dd input{width:100%;}
+.colorPalette-box-colorString .colorPalette-text-rgb,
+.colorPalette-box-colorString .colorPalette-text-hsl{ color: #999;}
 
-.colorPallet-text-hsl,.colorPallet-text-rgb,.colorPallet-text-hex{
+.colorPalette-text-hsl,.colorPalette-text-rgb,.colorPalette-text-hex{
 	width:5em; text-align: left; background-color: transparent; 
 	border-width:0;
 	border-bottom: 1px solid #ccc;
 }
-.colorPallet-text-hex:invalid{
+.colorPalette-text-hex:invalid{
 	text-decoration: line-through;
 }
-.colorPallet-box-btns >*{
+.colorPalette-box-btns >*{
 	width: 100%;
 }
-.colorPallet-tab-info .inputRangeBox{
+.colorPalette-tab-info .inputRangeBox{
 	margin:0 0.2em;
 }
-.colorPallet-tab-info .inputRangeBox::before{
+.colorPalette-tab-info .inputRangeBox::before{
 	text-shadow: 1px 1px 0px #fff;	
 }
 
 
 
 /* 히스토리 */
-.colorPallet-color{
+.colorPalette-color{
 	display: inline-block;
 	width:2em;height: 2em;
 	margin:5px; padding:0;
 	position: relative;
 	border-width: 0;
 }
-.colorPallet-color[data-selected]::after{
+.colorPalette-color[data-selected]::after{
 	position: absolute;
 	top:0px; left:0px;
 	bottom: 0px; right: 0px;
@@ -226,29 +226,29 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	justify-content: center;  /* 가로 중앙 */
 	align-items: center; /* 세로 중앙 */
 }
-.colorPallet-bookmark::before{
+.colorPalette-bookmark::before{
 	content: "📎fix";font-size: 8px;
 	position: absolute;bottom: 1px; right: 1px;
 	color: #333;
 }
 
-.colorPallet-box-hsl , .colorPallet-box-rgb , .colorPallet-box-colorString{
+.colorPalette-box-hsl , .colorPalette-box-rgb , .colorPalette-box-colorString{
 	font-size:24px;
 }
 
 /* 세로방향 FLEX */
-.colorPallet{
+.colorPalette{
 	display: flex;flex-direction: column;
 }
-.colorPallet-tab-hsl{
+.colorPalette-tab-hsl{
 	flex: 0 1 360px;
 	min-height: auto;
 }
-.colorPallet-tab-info{
+.colorPalette-tab-info{
 	flex: 0 0 0;
 	margin-bottom:0.5em;
 }
-.colorPallet-tab-colors{
+.colorPalette-tab-colors{
 	flex: 0 1 auto;
 	min-height: 50px;
 	overflow-y: auto;
@@ -257,6 +257,6 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	border: 1px dashed #999;
 	border-width: 2px 0 2px 0;
 }
-.colorPallet-tab-colors:empty{
+.colorPalette-tab-colors:empty{
 	display: none;
 }

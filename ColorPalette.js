@@ -1,74 +1,74 @@
 /**
-* ColorPallet
+* ColorPalette
 * 컬러 파레트
 * "공대여자는 이쁘다"를 표시기해야 쓸 수 있습니다.
 */
 
-var ColorPallet = function(i_opt){
+var ColorPalette = function(i_opt){
   /* === 옵션 초기화 === */
-  var opt = Object.assign({"defColor":"#000000","bookmark":[],"maxHistory":10,"localStorageHistoryKey":"ColorPallet-history-key"},i_opt?i_opt:{});
+  var opt = Object.assign({"defColor":"#000000","bookmark":[],"maxHistory":10,"localStorageHistoryKey":"ColorPalette-history-key"},i_opt?i_opt:{});
   
   /* === 기본 노트 생성 === */
   
-  var innerHTML = '<div class="colorPallet" translate="no"> \
-  <div class="colorPallet-tab colorPallet-tab-hsl" data-h="0" data-s="0" data-l="0" > \
-  <div class="colorPallet-box colorPallet-box-sl"> \
-  <div class="colorPallet-range colorPallet-range-s colorPallet-bg-h"></div> \
-  <div class="colorPallet-range colorPallet-range-l"></div> \
-  <div class="colorPallet-bar colorPallet-bar-s"></div> \
-  <div class="colorPallet-bar colorPallet-bar-l"></div>					 \
+  var innerHTML = '<div class="colorPalette" translate="no"> \
+  <div class="colorPalette-tab colorPalette-tab-hsl" data-h="0" data-s="0" data-l="0" > \
+  <div class="colorPalette-box colorPalette-box-sl"> \
+  <div class="colorPalette-range colorPalette-range-s colorPalette-bg-h"></div> \
+  <div class="colorPalette-range colorPalette-range-l"></div> \
+  <div class="colorPalette-bar colorPalette-bar-s"></div> \
+  <div class="colorPalette-bar colorPalette-bar-l"></div>					 \
   </div> \
-  <div class="colorPallet-box colorPallet-box-h ColorPallet-h-landscape" width="50" height="300"> \
-  <div class="colorPallet-range colorPallet-range-h"></div> \
-  <div class="colorPallet-bar colorPallet-bar-h"></div> \
+  <div class="colorPalette-box colorPalette-box-h ColorPalette-h-landscape" width="50" height="300"> \
+  <div class="colorPalette-range colorPalette-range-h"></div> \
+  <div class="colorPalette-bar colorPalette-bar-h"></div> \
   </div> \
   </div> \
-  <div  class="colorPallet-tab colorPallet-tab-info"> \
-  <div class="colorPallet-box colorPallet-box-hsl"> \
+  <div  class="colorPalette-tab colorPalette-tab-info"> \
+  <div class="colorPalette-box colorPalette-box-hsl"> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="H " data-suffix="°" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-h" type="range" min="0" max="360" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-h" type="range" min="0" max="360" step="1"  /> \
   </div> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="S " data-suffix="%" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-s" type="range" min="0" max="100" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-s" type="range" min="0" max="100" step="1"  /> \
   </div> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="L " data-suffix="%" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-l" type="range" min="0" max="100" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-l" type="range" min="0" max="100" step="1"  /> \
   </div> \
   </div> \
-  <div class="colorPallet-box colorPallet-box-rgb"> \
+  <div class="colorPalette-box colorPalette-box-rgb"> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="R " data-suffix="" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-r" type="range" min="0" max="255" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-r" type="range" min="0" max="255" step="1"  /> \
   </div> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="G " data-suffix="" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-g" type="range" min="0" max="255" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-g" type="range" min="0" max="255" step="1"  /> \
   </div> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="B " data-suffix="" style="width:100%;"> \
-  <input class="colorPallet-text colorPallet-text-b" type="range" min="0" max="255" step="1"  /> \
+  <input class="colorPalette-text colorPalette-text-b" type="range" min="0" max="255" step="1"  /> \
   </div> \
   </div> \
-  <div class="colorPallet-box colorPallet-box-colorString"> \
+  <div class="colorPalette-box colorPalette-box-colorString"> \
   <dl> \
   <dt>HSL</dt> \
-  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-hsl" type="text" readonly/></dd> \
+  <dd><input spellcheck="false" class="colorPalette-text colorPalette-text-hsl" type="text" readonly/></dd> \
   </dl> \
   <dl> \
   <dt>RGB</dt> \
-  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-rgb" type="text" readonly/></dd> \
+  <dd><input spellcheck="false" class="colorPalette-text colorPalette-text-rgb" type="text" readonly/></dd> \
   </dl> \
   <dl> \
   <dt>HEX</dt> \
-  <dd><input spellcheck="false" class="colorPallet-text colorPallet-text-hex" type="text" pattern="^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$" maxlength="7" />	</dd> \
+  <dd><input spellcheck="false" class="colorPalette-text colorPalette-text-hex" type="text" pattern="^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$" maxlength="7" />	</dd> \
   </dl> \
   </div> \
-  <div class="colorPallet-box colorPallet-box-btns"> \
-  <button type="button" class="colorPallet-btn colorPallet-btn-curr colorPallet-bg-color-curr"></button> \
-  <button type="button" class="colorPallet-btn colorPallet-btn-new colorPallet-bg-color-new"></button> \
-  <button type="button" class="colorPallet-btn colorPallet-btn-confirm"></button> \
-  <button type="button" class="colorPallet-btn colorPallet-btn-cancel"></button> \
+  <div class="colorPalette-box colorPalette-box-btns"> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-curr colorPalette-bg-color-curr"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-new colorPalette-bg-color-new"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-confirm"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-cancel"></button> \
   </div> \
   </div> \
-  <div class="colorPallet-tab colorPallet-tab-colors"> \
-  <div class="colorPallet-history"> \
+  <div class="colorPalette-tab colorPalette-tab-colors"> \
+  <div class="colorPalette-history"> \
   </div> \
   </div> \
   </div>';
@@ -76,34 +76,34 @@ var ColorPallet = function(i_opt){
   // var cp = document.getElementById("test");
   var div = document.createElement('div');
   div.innerHTML = innerHTML;
-  var cp = div.querySelector(".colorPallet");
+  var cp = div.querySelector(".colorPalette");
   div = null;
-  var tab_hsl = cp.querySelector(".colorPallet-tab-hsl");
-  var tab_colors = cp.querySelector(".colorPallet-tab-colors");
-  var box_sl = cp.querySelector(".colorPallet-box-sl");
-  var box_h = cp.querySelector(".colorPallet-box-h");
-  var range_s = cp.querySelector(".colorPallet-range-s");
-  var range_l = cp.querySelector(".colorPallet-range-l");
-  var range_h = cp.querySelector(".colorPallet-range-h");
-  var bar_s = cp.querySelector(".colorPallet-bar-s");
-  var bar_l = cp.querySelector(".colorPallet-bar-l");
-  var bar_h = cp.querySelector(".colorPallet-bar-h");
-  var text_h = cp.querySelector(".colorPallet-text-h");
-  var text_s = cp.querySelector(".colorPallet-text-s");
-  var text_l = cp.querySelector(".colorPallet-text-l");
-  var text_r = cp.querySelector(".colorPallet-text-r");
-  var text_g = cp.querySelector(".colorPallet-text-g");
-  var text_b = cp.querySelector(".colorPallet-text-b");
-  var text_hsl = cp.querySelector(".colorPallet-text-hsl");
-  var text_rgb = cp.querySelector(".colorPallet-text-rgb");
-  var text_hex = cp.querySelector(".colorPallet-text-hex");
-  var btn_curr = cp.querySelector(".colorPallet-btn-curr");
-  var btn_new = cp.querySelector(".colorPallet-btn-new");
-  var btn_confirm = cp.querySelector(".colorPallet-btn-confirm");
-  var btn_cancel = cp.querySelector(".colorPallet-btn-cancel");
-  var bg_h = cp.querySelectorAll(".colorPallet-bg-h");
-  var bg_color_curr = cp.querySelectorAll(".colorPallet-bg-color-curr");
-  var bg_color_new = cp.querySelectorAll(".colorPallet-bg-color-new");
+  var tab_hsl = cp.querySelector(".colorPalette-tab-hsl");
+  var tab_colors = cp.querySelector(".colorPalette-tab-colors");
+  var box_sl = cp.querySelector(".colorPalette-box-sl");
+  var box_h = cp.querySelector(".colorPalette-box-h");
+  var range_s = cp.querySelector(".colorPalette-range-s");
+  var range_l = cp.querySelector(".colorPalette-range-l");
+  var range_h = cp.querySelector(".colorPalette-range-h");
+  var bar_s = cp.querySelector(".colorPalette-bar-s");
+  var bar_l = cp.querySelector(".colorPalette-bar-l");
+  var bar_h = cp.querySelector(".colorPalette-bar-h");
+  var text_h = cp.querySelector(".colorPalette-text-h");
+  var text_s = cp.querySelector(".colorPalette-text-s");
+  var text_l = cp.querySelector(".colorPalette-text-l");
+  var text_r = cp.querySelector(".colorPalette-text-r");
+  var text_g = cp.querySelector(".colorPalette-text-g");
+  var text_b = cp.querySelector(".colorPalette-text-b");
+  var text_hsl = cp.querySelector(".colorPalette-text-hsl");
+  var text_rgb = cp.querySelector(".colorPalette-text-rgb");
+  var text_hex = cp.querySelector(".colorPalette-text-hex");
+  var btn_curr = cp.querySelector(".colorPalette-btn-curr");
+  var btn_new = cp.querySelector(".colorPalette-btn-new");
+  var btn_confirm = cp.querySelector(".colorPalette-btn-confirm");
+  var btn_cancel = cp.querySelector(".colorPalette-btn-cancel");
+  var bg_h = cp.querySelectorAll(".colorPalette-bg-h");
+  var bg_color_curr = cp.querySelectorAll(".colorPalette-bg-color-curr");
+  var bg_color_new = cp.querySelectorAll(".colorPalette-bg-color-new");
   
   var cp_history = [];
   var bookmark =[];
@@ -244,7 +244,7 @@ var ColorPallet = function(i_opt){
     for(var i=0,m=bookmark.length;i<m;i++){
       i_c_data= bookmark[i];
       his = document.createElement('button');
-      his.className="colorPallet-color colorPallet-bookmark"
+      his.className="colorPalette-color colorPalette-bookmark"
       his.type = "button";
       his.c_data = Object.assign({},i_c_data);
       stringHEX = cp.toStringHEX(his.c_data);
@@ -255,7 +255,7 @@ var ColorPallet = function(i_opt){
     for(var i=0,m=cp_history.length;i<m;i++){
       i_c_data= cp_history[i];
       his = document.createElement('button');
-      his.className="colorPallet-color colorPallet-history"
+      his.className="colorPalette-color colorPalette-history"
       his.type = "button";
       his.c_data = Object.assign({},i_c_data);
       stringHEX = cp.toStringHEX(his.c_data);
@@ -300,9 +300,9 @@ var ColorPallet = function(i_opt){
     text_hsl.value = cp.toStringHSL();
     var stringHEX = cp.toStringHEX();
     /* 즐겨찾기에서 선택 색 표시 */
-    var t = cp.querySelector('.colorPallet-tab-colors .colorPallet-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
+    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
     if(t) t.removeAttribute('data-selected');
-    var t = cp.querySelector('.colorPallet-tab-colors .colorPallet-color[data-stringHEX="'+stringHEX+'"]');
+    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-stringHEX="'+stringHEX+'"]');
     if(t) t.setAttribute('data-selected',true);
     
     

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko" >
 <head>
-	<title>ColorPallet</title>
+	<title>ColorPalette</title>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Script-Type" content="text/javascript">
 	<meta http-equiv="Content-Style-Type" content="text/css">
@@ -40,14 +40,14 @@
 	<script src="InputRangeBox/InputRangeBox.js"></script>
 	
 	<script src="toDraggable/toDraggable.js"></script>	
-	<link rel="stylesheet" href="ColorPallet.css"> 
-	<script src="ColorPallet.js"></script>
+	<link rel="stylesheet" href="ColorPalette.css"> 
+	<script src="ColorPalette.js"></script>
 	<script>
 	var cp;
 	var $testModal;
 	window.addEventListener('load',function(evt){
 		
-		cp = ColorPallet({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp"});
+		cp = ColorPalette({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp"});
 		InputRangeBox.autoInit(cp);
 		document.getElementById('textDiv').appendChild(cp);
 		cp.addEventListener('change',function(evt){
@@ -63,7 +63,7 @@
 		//--- bootstrap modal 연동 샘플 시작
 		$testModal = $("#testModal");
 		
-		cp2 = ColorPallet({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp2"});
+		cp2 = ColorPalette({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp2"});
 		InputRangeBox.autoInit(cp2);
 		$testModal.find(".modal-body").html("").append(cp2);
 		cp2.addEventListener("confirm",function(evt){
@@ -92,7 +92,7 @@
 	height: calc(100% - 70px);
 	padding: 5px;
 }
-#testModal .modal-body .colorPallet{
+#testModal .modal-body .colorPalette{
 	max-height: 100%;
 }
 </style>
@@ -100,13 +100,13 @@
 </head>
 <body style="background-color:#eee;word-break:break-all">
 	<div class="container">
-		<h1>ColorPallet</h1>
+		<h1>ColorPalette</h1>
 		<ul style="">
 			<li>컬러 파레트</li>
 			<li>jquery, Bootstrap 없이도 동작 가능</li>
 			<li><a href="http://www.mins01.com/mh/tech/read/1218" target="_blank">http://www.mins01.com/mh/tech/read/1218</a></li>
-			<li><a href="https://github.com/mins01/ui_ColorPallet/" target="_blank">https://github.com/mins01/ui_ColorPallet/</a></li>
-			<li><a href="https://mins01.github.io/ui_ColorPallet/" target="_blank">https://mins01.github.io/ui_ColorPallet/</a></li>
+			<li><a href="https://github.com/mins01/ui_ColorPalette/" target="_blank">https://github.com/mins01/ui_ColorPalette/</a></li>
+			<li><a href="https://mins01.github.io/ui_ColorPalette/" target="_blank">https://mins01.github.io/ui_ColorPalette/</a></li>
 		</ul>
 		<h2>sample for bootstrap 3</h2>
 		<hr />
