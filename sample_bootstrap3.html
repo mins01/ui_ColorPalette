@@ -68,9 +68,9 @@
 		$testModal.find(".modal-body").html("").append(cp2);
 		cp2.addEventListener("confirm",function(evt){
 			$testModal.modal('hide');
-			var c_data = this.getData();
-			alert("select Color : "+this.toStringHSL(c_data)+" "+this.toStringRGB(c_data)+" "+this.toStringHEX(c_data));
-			$("#testBtn").css("backgroundColor",this.toStringHEX(c_data))
+			var c_obj = this.get();
+			alert("select Color : "+c_obj.toStringHSL()+" "+c_obj.toStringRGB()+" "+c_obj.toStringHEX());
+			$("#testBtn").css("backgroundColor",c_obj.toString())
 		})
 		cp2.addEventListener("cancel",function(evt){
 			$testModal.modal('hide');
@@ -114,13 +114,13 @@
 		<button id="testBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal">
 			bootstrap modal samlpe
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('#ff0000')" style="background-color:#ff0000">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('#ff0000')" style="background-color:#ff0000">
 			open #FF0000
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('rgb(100,200,30)')" style="background-color:rgb(100,200,30)">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('rgb(100,200,30)')" style="background-color:rgb(100,200,30)">
 			open rgb(100,200,30)
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.setColorString('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
 			open hsl(270,50%,25%)
 		</button>
 		<hr />
