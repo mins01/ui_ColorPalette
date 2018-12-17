@@ -107,7 +107,10 @@ var ColorPalette = function(i_opt){
   
   var cp_history = [];
   var bookmark =[];
-  var c_data = {h:0,s:0,l:0,r:0,g:0,b:0}  
+  var c_obj = new ColorPalette.Color({r:0,g:0,b:0}); //선택된
+  var c_obj_pre = new ColorPalette.Color({r:0,g:0,b:0}); //선택중인
+  var c_obj_tmp = new ColorPalette.Color({r:0,g:0,b:0}); //계산용
+  var hsl_pre = {h:0,s:0,l:0};
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
   bar_h.style.top=0;  bar_h.style.left=0;
@@ -127,6 +130,352 @@ var ColorPalette = function(i_opt){
       var y = evt.y;
     }
     return [x,y];
+  }
+  function addColorHistory(rgb){
+    c_obj_tmp.set(rgb)
+    var stringRGB = c_obj_tmp.toStringRGB(rgb);
+    if(!cp_history.find(function(v){c_obj_tmp.set(v);return stringRGB==c_obj_tmp.toStringRGB();})
+    && !bookmark.find(function(v){c_obj_tmp.set(v);return stringRGB==c_obj_tmp.toStringRGB();})){
+      cp_history.push(Object.assign({},rgb));  
+      showHistory();
+    }
+    
+    
+  }
+  function saveHistoryToLS(){
+    localStorage.setItem(opt.localStorageHistoryKey,JSON.stringify(cp_history));
+  }
+  function initHistoryFromLS(){
+    cp_history = JSON.parse(localStorage.getItem(opt.localStorageHistoryKey));
+    if(!cp_history){
+      cp_history = [];
+    }
+    showHistory();
+  }
+  function showHistory(){
+    tab_colors.innerHTML = "";
+    var maxHistory = parseInt(opt.maxHistory);
+    if(cp_history.length > maxHistory){
+      cp_history.splice(0,cp_history.length-maxHistory);
+    }
+    saveHistoryToLS()
+    var his,rgb,stringHEX;
+    for(var i=0,m=bookmark.length;i<m;i++){
+      rgb= bookmark[i];
+      c_obj_tmp.set(rgb);
+      his = document.createElement('button');
+      his.className="colorPalette-color colorPalette-bookmark"
+      his.type = "button";
+      his.rgb = Object.assign({},rgb);
+      stringHEX = c_obj_tmp.toStringHEX();
+      his.style.backgroundColor = stringHEX;
+      his.setAttribute('data-stringHEX',stringHEX);
+      tab_colors.appendChild(his);  
+    }   
+    for(var i=0,m=cp_history.length;i<m;i++){
+      rgb= cp_history[i];
+      c_obj_tmp.set(rgb);
+      his = document.createElement('button');
+      his.className="colorPalette-color colorPalette-history"
+      his.type = "button";
+      his.rgb = Object.assign({},rgb);
+      stringHEX = c_obj_tmp.toStringHEX();
+      his.style.backgroundColor = stringHEX;
+      his.setAttribute('data-stringHEX',stringHEX);
+      tab_colors.appendChild(his);  
+    }    
+  }
+  var _sync = function(byInput){
+    var hsl = hsl_pre;
+    var rgb = c_obj_pre.toRGB();
+    bar_h.style.top=(hsl.h/360)*100+'%';
+    
+    for(var i=0,m=bg_h.length;i<m;i++){
+      bg_h[i].style.backgroundColor="hsl("+hsl.h+", 100%, 50%)"
+    }
+    text_s.style.backgroundColor="hsl("+hsl.h+", 100%, "+hsl.l+"%)"
+    text_l.style.backgroundColor="hsl("+hsl.h+", "+hsl.s+"%, 50%)"
+    
+    for(var i=0,m=bg_color_new.length;i<m;i++){
+      bg_color_new[i].style.backgroundColor=c_obj_pre.toStringHEX();
+      bg_color_new[i].rgb = rgb;
+    }
+    bar_s.style.left=hsl.s+'%';
+    bar_l.style.top=(100-hsl.l)+'%';
+    tab_hsl.setAttribute('data-toStringHSL',c_obj_pre.toStringHSL())
+    tab_hsl.setAttribute('data-toStringRGB',c_obj_pre.toStringRGB())
+    tab_hsl.setAttribute('data-toStringHEX',c_obj_pre.toStringHEX())
+    if(byInput!='hsl'){
+      text_h.value = hsl.h.toFixed(0)
+      text_s.value = hsl.s.toFixed(0)
+      text_l.value = hsl.l.toFixed(0)  
+    }
+    if(byInput!='rgb'){
+      text_r.value = rgb.r.toFixed(0)
+      text_g.value = rgb.g.toFixed(0)
+      text_b.value = rgb.b.toFixed(0)
+    }
+    if(byInput!='hex'){
+      text_hex.value = c_obj_pre.toStringHEX();
+    }
+    text_rgb.value = c_obj_pre.toStringRGB();
+    text_hsl.value = c_obj_pre.toStringHSL();
+    var stringHEX = c_obj_pre.toStringHEX();
+    /* 즐겨찾기에서 선택 색 표시 */
+    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
+    if(t) t.removeAttribute('data-selected');
+    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-stringHEX="'+stringHEX+'"]');
+    if(t) t.setAttribute('data-selected',true);
+  }
+  var setBookmark = function(defColor){
+    for(var i=0,m=defColor.length;i<m;i++){
+      c_obj_tmp.set(defColor[i]);
+      // console.log(defColor[i],c_obj_tmp.toRGB(),bookmark)
+      bookmark.push(c_obj_tmp.toRGB())
+    } 
+  }
+  /**
+  * toStringHSL 색을 hsl(111,99%,99%) 로 나타냄
+  * @return {String}
+  */
+  cp.toStringHSL = function(){
+    return c_obj.toStringHSL();
+  }
+  /**
+  * toStringRGB 색을 rgb(111,222,99) 로 나타냄
+  * @return {String}
+  */
+  cp.toStringRGB = function(){
+    return c_obj.toStringRGB();
+  }
+  /**
+  * toStringHEX 색을 #aabbcc 로 나타냄
+  * @return {String}
+  */
+  cp.toStringHEX = function(){
+    return c_obj.toStringHEX();
+  }
+  /**
+  * setHEX HEX로 값을 설정
+  * @param  {String} #aabbcc
+  */
+  cp.setHEX = function(hex_str){
+    c_obj.set(hex_str)
+    c_obj_pre.set(hex_str)
+    hsl_pre = c_obj_pre.toHSL()
+    _sync('hex')
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+    cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+  }
+  /**
+  * setColorString 문자열로 값을 설정
+  * @param  {String} 색상 문자열
+  */
+  cp.set = function(str){
+    c_obj.set(str)
+    c_obj_pre.set(str)
+    hsl_pre = c_obj_pre.toHSL()
+    _sync()
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+    cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+  }
+  cp.get = function(){
+    var c_obj_t = new ColorPalette.Color(c_obj.toRGB())
+    return c_obj_t;
+  }
+
+  cp.previewHSL = function(h,s,l){
+    // var hsl = c_obj_pre.toHSL();
+    hsl_pre = {h:h==null?hsl_pre.h:parseInt(h),s:s==null?hsl_pre.s:parseInt(s),l:l==null?hsl_pre.l:parseInt(l)};
+    c_obj_pre.set(hsl_pre);
+    _sync();    
+  }
+  cp.setPreview = function(obj){
+    c_obj_pre.set(obj)
+    hsl_pre = c_obj_pre.toHSL()
+    _sync();
+  }
+  cp.getPreview = function(){
+    var c_obj_t = new ColorPalette.Color(c_obj_pre.toRGB())
+    return c_obj_t;
+  }
+
+  cp.previewRGB = function(r,g,b){
+    var rgb = c_obj_pre.toRGB();
+    c_obj_pre.set({r:r==null?rgb.r:r,g:g==null?rgb.g:g,b:b==null?rgb.b:b})
+    hsl_pre = c_obj_pre.toHSL()
+    _sync();
+  }  
+  /**
+  * setHSL hsl 값으로 설정
+  * @param  {Number} h 0~360
+  * @param  {Number} s 0~100%
+  * @param  {Number} l 0~100%
+  */
+  cp.setHSL = function(h,s,l){
+    var hsl = {h:h,s:s,l:l}
+    c_obj.set(hsl)
+    c_obj_pre.set(hsl)
+    hsl_pre = c_obj_pre.toHSL()
+    _sync();
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+    cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+  }
+  /**
+  * setRGB rgb 값으로 설정
+  * @param  {Number} r 0~255
+  * @param  {Number} g 0~255
+  * @param  {Number} b 0~255
+  */
+  cp.setRGB = function(r,g,b){
+    var rgb = {r:r,g:g,b:b}
+    c_obj.set(rgb)
+    c_obj_pre.set(rgb)
+    hsl_pre = c_obj_pre.toHSL()
+    _sync()
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+    cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+  }
+  /**
+  * toString 컬러 데이터를 JSON 으로 출력 
+  * @return {String} {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}
+  
+  */
+  cp.toString = function(){
+    return c_obj.toString();
+  }
+  /**
+  * confirm confirm 동작
+  * confirm 이벤트가 발생됨
+  */
+  cp.confirm = function(){
+    var is_changed = (c_obj_pre.toStringRGB()!=c_obj.toStringRGB());
+    c_obj.set(c_obj_pre.toRGB());
+    for(var i=0,m=bg_color_curr.length;i<m;i++){
+      bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
+      bg_color_curr[i].rgb = c_obj.toRGB();
+    }
+    addColorHistory(c_obj.toRGB())
+    _sync();
+    if(is_changed) cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+    cp.dispatchEvent((new CustomEvent("confirm", {})));
+  }
+  /**
+  * cancel cancel 동작
+  * cancel 이벤트가 발생됨
+  */
+  cp.cancel = function(){
+    c_obj_pre.set(c_obj.toRGB());
+    hsl_pre = c_obj_pre.toHSL()
+    _sync();
+    cp.dispatchEvent((new CustomEvent("cancel", {})));
+  }
+  /* === 이벤트 초기화 부분  ====  */
+  var cb_for_h=function(evt,gapX,gapY,target,data){
+    // if(gapX==0){return;}
+    var bcr = target.getBoundingClientRect();
+    var xy = _getXY(evt);
+    var x = xy[0], y = xy[1];
+    // x-=bcr.left
+    y-=bcr.top
+    // x = Math.max(0,Math.min(bcr.width,x));
+    y = Math.max(0,Math.min(bcr.height,y));
+    // var h = x/bcr.width*360;
+    var h = y/bcr.height*360;
+    // console.log(h)
+    cp.previewHSL(h,null,null);
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+    if(evt.type=="pointerup"){
+      cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
+    }
+  }
+  toDraggable(box_h,cb_for_h,cb_for_h,function(){cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));});
+  var cb_for_sl=function(evt,gapX,gapY,target,data){
+    // if(gapX==0){return;}
+    var bcr = target.getBoundingClientRect();
+    var xy = _getXY(evt);
+    var x = xy[0], y = xy[1];
+    x-=bcr.left
+    y-=bcr.top
+    x = Math.max(0,Math.min(bcr.width,x));
+    y = Math.max(0,Math.min(bcr.height,y));
+    var s = x/bcr.width*100;
+    // var t = (200-s)/100;
+    // var l = (1-y/bcr.height)*50*t;
+    var l = (1-y/bcr.height)*100;
+    // console.log(s,l)
+    cp.previewHSL(null,s,l);
+    cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
+  }
+  toDraggable(box_sl,cb_for_sl,cb_for_sl,function(){cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));});
+  var cb_hsl = function(evt){cp.previewHSL(text_h.value,text_s.value,text_l.value)}
+  text_h.addEventListener("input",cb_hsl);
+  text_s.addEventListener("input",cb_hsl);
+  text_l.addEventListener("input",cb_hsl);
+  var cb_rgb = function(evt){cp.previewRGB(text_r.value,text_g.value,text_b.value)}
+  text_r.addEventListener("input",cb_rgb);
+  text_g.addEventListener("input",cb_rgb);
+  text_b.addEventListener("input",cb_rgb);
+  var cb_hex = function(evt){
+    var reg = new RegExp(this.pattern, "");
+    if (reg.test(this.value)) {
+      // The ZIP follows the constraint, we use the ConstraintAPI to tell it
+      this.setCustomValidity("");
+    }else{
+      this.setCustomValidity("HEX TYPE : #0cA9fF or #09f")
+      console.log("HEX TYPE : #0cA9fF or #09f");
+    }
+    if(!this.reportValidity()){    
+      return;
+    }
+    cp.setHEX(this.value)
+    console.log(this.value);
+  }
+  text_hex.addEventListener("input",cb_hex);
+  var cb_confirm = function(evt){cp.confirm()}
+  btn_confirm.addEventListener("click",cb_confirm);
+  var cb_cancel = function(evt){cp.cancel()}
+  btn_cancel.addEventListener("click",cb_cancel);
+  var cb_curr = function(evt){cp.setPreview(this.rgb);}
+  btn_curr.addEventListener("click",cb_curr);
+  // btn_new.addEventListener("click",cb_curr);
+  tab_colors.addEventListener("click",function(evt){
+    var target = evt.target;
+    if(!target.rgb){return;}
+    cp.setPreview(target.rgb);
+    _sync();
+  });
+  tab_colors.addEventListener("dblclick",function(evt){
+    var target = evt.target;
+    if(!target.rgb){return;}
+    cp.set(target.rgb);
+    _sync();
+    cp.confirm();
+  });
+  /* === 내용 초기화 === */
+  c_obj.set(opt.defColor)
+  c_obj_pre.set(opt.defColor)
+  hsl_pre = c_obj_pre.toHSL()
+  setBookmark(opt.bookmark);
+  initHistoryFromLS();
+  _sync();
+  btn_curr.style.backgroundColor=c_obj.toStringHEX();
+  for(var i=0,m=bg_color_curr.length;i<m;i++){
+    bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
+    bg_color_curr[i].rgb = c_obj.toRGB();
+  }
+  
+  
+  
+  return cp;
+}
+
+/**
+* 색 클래스
+*/
+ColorPalette.Color = (function(Color){
+  var Color = function(i_str){
+    this.init(i_str);
   }
   // http://hsl2rgb.nichabi.com/javascript-function.php
   function hsl2rgb (h, s, l) {
@@ -208,381 +557,107 @@ var ColorPalette = function(i_opt){
       }
       h /= 6
     }
-    h = Math.floor(h * 360)
-    s = Math.floor(s * 100)
-    l = Math.floor(l * 100)
+    h = Math.round(h * 360) //floor -> round
+    s = Math.round(s * 100) //floor -> round
+    l = Math.round(l * 100) //floor -> round
     return { h: h, s: s, l: l }
   }
-  function addColorHistory(i_c_data){    
-    var stringRGB = cp.toStringRGB(i_c_data);
-    if(!cp_history.find(function(v){return stringRGB==cp.toStringRGB(v);})
-    && !bookmark.find(function(v){return stringRGB==cp.toStringRGB(v);})){
-      cp_history.push(Object.assign({},i_c_data));  
-      showHistory();
-    }
-    
-    
-  }
-  function saveHistoryToLS(){
-    localStorage.setItem(opt.localStorageHistoryKey,JSON.stringify(cp_history));
-  }
-  function initHistoryFromLS(){
-    cp_history = JSON.parse(localStorage.getItem(opt.localStorageHistoryKey));
-    if(!cp_history){
-      cp_history = [];
-    }
-    showHistory();
-  }
-  function showHistory(){
-    tab_colors.innerHTML = "";
-    var maxHistory = parseInt(opt.maxHistory);
-    if(cp_history.length > maxHistory){
-      cp_history.splice(0,cp_history.length-maxHistory);
-    }
-    saveHistoryToLS()
-    var his,i_c_data,stringHEX;
-    for(var i=0,m=bookmark.length;i<m;i++){
-      i_c_data= bookmark[i];
-      his = document.createElement('button');
-      his.className="colorPalette-color colorPalette-bookmark"
-      his.type = "button";
-      his.c_data = Object.assign({},i_c_data);
-      stringHEX = cp.toStringHEX(his.c_data);
-      his.style.backgroundColor = stringHEX;
-      his.setAttribute('data-stringHEX',stringHEX);
-      tab_colors.appendChild(his);  
-    }   
-    for(var i=0,m=cp_history.length;i<m;i++){
-      i_c_data= cp_history[i];
-      his = document.createElement('button');
-      his.className="colorPalette-color colorPalette-history"
-      his.type = "button";
-      his.c_data = Object.assign({},i_c_data);
-      stringHEX = cp.toStringHEX(his.c_data);
-      his.style.backgroundColor = stringHEX;
-      his.setAttribute('data-stringHEX',stringHEX);
-      tab_colors.appendChild(his);  
-    }    
-  }
-  var _sync = function(byInput){
-    bar_h.style.top=(c_data.h/360)*100+'%';
-    // range_s.style.background="linear-gradient(to right, hsl("+c_data.h+", 100%, 100%), hsl("+c_data.h+", 100%, 50%))"
-    
-    for(var i=0,m=bg_h.length;i<m;i++){
-      bg_h[i].style.backgroundColor="hsl("+c_data.h+", 100%, 50%)"
-    }
-    text_s.style.backgroundColor="hsl("+c_data.h+", 100%, "+c_data.l+"%)"
-    text_l.style.backgroundColor="hsl("+c_data.h+", "+c_data.s+"%, 50%)"
-    
-    for(var i=0,m=bg_color_new.length;i<m;i++){
-      bg_color_new[i].style.backgroundColor=cp.toStringHEX();
-      bg_color_new[i].c_data = Object.assign({},c_data);
-    }
-    bar_s.style.left=c_data.s+'%';
-    bar_l.style.top=(100-c_data.l)+'%';
-    tab_hsl.setAttribute('data-toStringHSL',cp.toStringHSL())
-    tab_hsl.setAttribute('data-toStringRGB',cp.toStringRGB())
-    tab_hsl.setAttribute('data-toStringHEX',cp.toStringHEX())
-    if(byInput!='hsl'){
-      text_h.value = c_data.h.toFixed(0)
-      text_s.value = c_data.s.toFixed(0)
-      text_l.value = c_data.l.toFixed(0)  
-    }
-    if(byInput!='rgb'){
-      text_r.value = c_data.r.toFixed(0)
-      text_g.value = c_data.g.toFixed(0)
-      text_b.value = c_data.b.toFixed(0)
-    }
-    if(byInput!='hex'){
-      text_hex.value = cp.toStringHEX();
-    }
-    text_rgb.value = cp.toStringRGB();
-    text_hsl.value = cp.toStringHSL();
-    var stringHEX = cp.toStringHEX();
-    /* 즐겨찾기에서 선택 색 표시 */
-    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
-    if(t) t.removeAttribute('data-selected');
-    var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-stringHEX="'+stringHEX+'"]');
-    if(t) t.setAttribute('data-selected',true);
-    
-    
-    
-  }
-  var setBookmark = function(defColor){
-    for(var i=0,m=defColor.length;i<m;i++){
-      bookmark.push(cp.parseColorString(defColor[i]))  
-    } 
-  }
-  /* === 퍼블릭 메소드 === */
-  /**
-  * getData 컬러 데이터 가져오기
-  * @return {Object} 컬러 데이터
-  */
-  cp.getData = function(){
-    return Object.assign({},c_data);;
-  }
-  /**
-  * setData 컬러 데이터 설정하기
-  * @param  {Object} data 컬러 데이터
-  */
-  cp.setData = function(data){
-    c_data = Object.assign(c_data,data);
-    _sync();
-    cp.dispatchEvent((new CustomEvent("change", {})));
-  }
-  /**
-  * toStringHSL 색을 hsl(111,99%,99%) 로 나타냄
-  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
-  * @return {String}
-  */
-  cp.toStringHSL = function(i_c_data){
-    var v_c_data = i_c_data?i_c_data:c_data;
-    return "hsl("+v_c_data.h.toFixed(0)+","+v_c_data.s.toFixed(0)+"%,"+v_c_data.l.toFixed(0)+"%)";
-  }
-  /**
-  * toStringRGB 색을 rgb(111,222,99) 로 나타냄
-  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
-  * @return {String}
-  */
-  cp.toStringRGB = function(i_c_data){
-    var v_c_data = i_c_data?i_c_data:c_data;
-    return "rgb("+v_c_data.r.toFixed(0)+","+v_c_data.g.toFixed(0)+","+v_c_data.b.toFixed(0)+")";
-  }
-  /**
-  * toStringHEX 색을 #aabbcc 로 나타냄
-  * @param  {Object} data 컬러 데이터(옵션). 없을 경우 현재츼 색
-  * @return {String}
-  */
-  cp.toStringHEX = function(i_c_data){
-    var v_c_data = i_c_data?i_c_data:c_data;
-    return '#'+((v_c_data.r.toFixed(0)<16)?'0':'')+v_c_data.r.toString(16)+((v_c_data.g.toFixed(0)<16)?'0':'')+v_c_data.g.toString(16)+((v_c_data.b.toFixed(0)<16)?'0':'')+v_c_data.b.toString(16);
-  }
-  /**
-  * setHEX HEX로 값을 설정
-  * @param  {String} #aabbcc
-  */
-  cp.setHEX = function(hex_str){
-    c_data = cp.parseColorString(hex_str);
-    _sync('hex')
-    cp.dispatchEvent((new CustomEvent("change", {})));
-  }
-  /**
-  * setColorString 문자열로 값을 설정
-  * @param  {String} 색상 문자열
-  */
-  cp.setColorString = function(str){
-    c_data = cp.parseColorString(str);
-    _sync()
-    cp.dispatchEvent((new CustomEvent("change", {})));
-  }
-  /**
-  * setHSL hsl 값으로 설정
-  * @param  {Number} h 0~360
-  * @param  {Number} s 0~100%
-  * @param  {Number} l 0~100%
-  */
-  cp.setHSL = function(h,s,l){
-    var hsl ={"h":parseFloat(h==null?c_data.h:h),"s":parseFloat(s==null?c_data.s:s),"l":parseFloat(s==null?c_data.l:l)}
-    c_data = Object.assign(c_data,hsl);
-    var rgb = hsl2rgb(c_data.h,c_data.s,c_data.l);
-    c_data = Object.assign(c_data,rgb);      
-    _sync();
-    cp.dispatchEvent((new CustomEvent("change", {})));
-  }
-  /**
-  * setRGB rgb 값으로 설정
-  * @param  {Number} r 0~255
-  * @param  {Number} g 0~255
-  * @param  {Number} b 0~255
-  */
-  cp.setRGB = function(r,g,b){
-    var rgb ={"r":parseFloat(r==null?c_data.r:r),"g":parseFloat(g==null?c_data.g:g),"b":parseFloat(b==null?c_data.b:b)}
-    c_data = Object.assign(c_data,rgb);
-    var hsl = rgb2hsl(c_data.r,c_data.g,c_data.b);
-    c_data = Object.assign(c_data,hsl);      
-    _sync()
-    cp.dispatchEvent((new CustomEvent("change", {})));
-  }
-  /**
-  * toString 컬러 데이터를 JSON 으로 출력 
-  * @return {String} {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}
-  
-  */
-  cp.toString = function(){
-    return JSON.stringify(c_data);
-  }
-  /**
-  * parseColorString 컬러 문자열을 컬레 데이터로 변환
-  * @param  {String} i_str rgb(1,2,3) or hsl(1,2%,3%) or #112233
-  * @return {Object} {"h":0,"s":72,"l":26,"r":115,"g":19,"b":19}
-  */
-  cp.parseColorString = function(i_str){
-    var str = i_str.toLowerCase().trim().replace(/\s/g,'');
-    var c_data =  {h:0,s:0,l:0,r:0,g:0,b:0}
-    if(str.indexOf('rgb')===0){
-      str = str.replace(/(^rgb|[^\d,])/g,'');
-      var t = str.split(',');
-      var rgb ={"r":parseInt(t[0]),"g":parseInt(t[1]),"b":parseInt(t[2])}
-      var hsl = rgb2hsl(rgb.r,rgb.g,rgb.b);
-      c_data = Object.assign(c_data,rgb,hsl);
-    }else if(str.indexOf('hsl')===0){
-      str = str.replace(/(^hsl|[^\d,])/g,'');
-      var t = str.split(',');
-      var hsl ={"h":parseInt(t[0]),"s":parseInt(t[1]),"l":parseInt(t[2])}
-      var rgb = hsl2rgb(hsl.h,hsl.s,hsl.l);
-      c_data = Object.assign(c_data,rgb,hsl);
-    }else if(str.indexOf('#')===0){
-      str = str.replace(/^#/,'');
-      if(str.length==3){
-        str = str[0]+str[0]+str[1]+str[1]+str[2]+str[2];
+  Color.prototype = {
+    "init":function(i_str){
+      this.rgb_data = {r:0,g:0,b:0}
+      this.toStringType="hex";
+      if(i_str){
+        this.set(i_str)
       }
-      var r = parseInt((str[0]+str[1]),16);
-      var g = parseInt((str[2]+str[3]),16);
-      var b = parseInt((str[4]+str[5]),16);
-      var rgb ={"r":r,"g":g,"b":b}
-      var hsl = rgb2hsl(rgb.r,rgb.g,rgb.b);
-      c_data = Object.assign(c_data,rgb,hsl);
+    },
+    "rgb2hsl":function(r,g,b){
+      return rgb2hsl(r,g,b)
+    },
+    "hsl2rgb":function(h,s,l){
+      return hsl2rgb(h,s,l)
+    },
+    "toString":function(toStringType){
+      if(!toStringType) toStringType = this.toStringType;
+      var fn = this["toString"+toStringType.toUpperCase()];
+      if(fn){
+        return this["toString"+toStringType.toUpperCase()]();
+      }else{
+        throw "not supported toStringType : "+toStringType;
+        return;
+      }
+    },
+    "toHSL":function(){
+      return rgb2hsl(this.rgb_data.r,this.rgb_data.g,this.rgb_data.b);
+    },
+    "toRGB":function(){
+      return {r:this.rgb_data.r,g: this.rgb_data.g,b: this.rgb_data.b};
+    },
+    "toHEX":function(){
+      return this.toStringHEX();
+    },
+    "toStringHSL":function(){
+      var t_hsl_data = this.toHSL();
+      return "hsl("+t_hsl_data.h.toFixed(0)+","+t_hsl_data.s.toFixed(0)+"%,"+t_hsl_data.l.toFixed(0)+"%)";
+    },
+    "toStringRGB":function(){
+      var t_rgb_data = this.rgb_data;
+      return "rgb("+t_rgb_data.r.toFixed(0)+","+t_rgb_data.g.toFixed(0)+","+t_rgb_data.b.toFixed(0)+")";
+    },
+    "toStringHEX":function(){
+      var t_rgb_data = this.rgb_data;
+      return '#'+((t_rgb_data.r.toFixed(0)<16)?'0':'')+t_rgb_data.r.toString(16)+((t_rgb_data.g.toFixed(0)<16)?'0':'')+t_rgb_data.g.toString(16)+((t_rgb_data.b.toFixed(0)<16)?'0':'')+t_rgb_data.b.toString(16);
+    },
+    "set":function(i_arg){
+      if(i_arg instanceof Object){
+        if(i_arg.r != undefined && i_arg.g != undefined && i_arg.b != undefined  ){
+          var rgb ={"r":parseInt(i_arg.r),"g":parseInt(i_arg.g),"b":parseInt(i_arg.b)}
+        }else if(i_arg.h != undefined && i_arg.s != undefined && i_arg.l != undefined  ){
+          var hsl ={"h":parseInt(i_arg.h),"s":parseInt(i_arg.s),"l":parseInt(i_arg.l)}
+          var rgb = hsl2rgb(hsl.h,hsl.s,hsl.l);
+        }else{
+          console.error(i_arg)
+          throw "invalid color format";
+          return;
+        }
+      }else if(typeof i_arg =="string"){
+        var str = i_arg.toLowerCase().trim().replace(/\s/g,'');
+        if(/^rgb\(\d{1,3},\d{1,3},\d{1,3}\)$/.test(str)){
+          str = str.replace(/(^rgb|[^\d,])/g,'');
+          var t = str.split(',');
+          var rgb ={"r":parseInt(t[0]),"g":parseInt(t[1]),"b":parseInt(t[2])}
+        }else if(/^hsl\(\d{1,3},\d{1,3}%,\d{1,3}%\)$/.test(str)){
+          str = str.replace(/(^hsl|[^\d,])/g,'');
+          var t = str.split(',');
+          var hsl ={"h":parseInt(t[0]),"s":parseInt(t[1]),"l":parseInt(t[2])}
+          var rgb = hsl2rgb(hsl.h,hsl.s,hsl.l);
+        }else if(/^#([0-9A-Fa-f]{3}|[0-9A-Za-z]{6})$/.test(str)){
+          str = str.replace(/^#/,'');
+          if(str.length==3){
+            str = str[0]+str[0]+str[1]+str[1]+str[2]+str[2];
+          }
+          var r = parseInt((str[0]+str[1]),16);
+          var g = parseInt((str[2]+str[3]),16);
+          var b = parseInt((str[4]+str[5]),16);
+          var rgb ={"r":r,"g":g,"b":b}
+        }else{
+          throw "invalid color format";
+          return;
+        }
+      
+      }
+      this.rgb_data = rgb;
     }
-    return c_data
+    
   }
-  /**
-   * setSelectedColor 선택된 색을 설정한다. confirm과 같지만, 이벤트는 발생 안한다.
-   * @param  {String} colorString [description]
-   */
-  cp.setSelectedColor = function(colorString){
-    c_data = cp.parseColorString(colorString);
-    var toStringHEX = cp.toStringHEX(c_data);
-    for(var i=0,m=bg_color_new.length;i<m;i++){
-      bg_color_new[i].style.backgroundColor=toStringHEX
-      bg_color_new[i].c_data = Object.assign({},c_data);
-    }
-    for(var i=0,m=bg_color_curr.length;i<m;i++){
-      bg_color_curr[i].style.backgroundColor=toStringHEX;
-      bg_color_curr[i].c_data = Object.assign({},c_data);
-    }
-    _sync();
-    cp.dispatchEvent((new CustomEvent("setselectedcolor", {})));
-
-  }
-  /**
-   * getSelectedColor 선택된 색을 가져온다.
-   * @return {Object} ColorData
-   */
-  cp.getSelectedColor = function(){
-    return Object.assign({},bg_color_curr[0].c_data);
-  }
-  /**
-  * confirm confirm 동작
-  * confirm 이벤트가 발생됨
-  */
-  cp.confirm = function(){
-    for(var i=0,m=bg_color_curr.length;i<m;i++){
-      bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
-      bg_color_curr[i].c_data = Object.assign({},c_data);
-    }
-    addColorHistory(c_data)
-    _sync();
-    cp.dispatchEvent((new CustomEvent("confirm", {})));
-  }
-  /**
-  * cancel cancel 동작
-  * cancel 이벤트가 발생됨
-  */
-  cp.cancel = function(){
-    cp.setData(btn_curr.c_data);
-    _sync();
-    cp.dispatchEvent((new CustomEvent("cancel", {})));
-  }
-  /* === 이벤트 초기화 부분  ====  */
-  var cb_for_h=function(evt,gapX,gapY,target,data){
-    // if(gapX==0){return;}
-    var bcr = target.getBoundingClientRect();
-    var xy = _getXY(evt);
-    var x = xy[0], y = xy[1];
-    // x-=bcr.left
-    y-=bcr.top
-    // x = Math.max(0,Math.min(bcr.width,x));
-    y = Math.max(0,Math.min(bcr.height,y));
-    // var h = x/bcr.width*360;
-    var h = y/bcr.height*360;
-    // console.log(h)
-    cp.setHSL(h,null,null);
-  }
-  toDraggable(box_h,cb_for_h,cb_for_h,null);
-  var cb_for_sl=function(evt,gapX,gapY,target,data){
-    // if(gapX==0){return;}
-    var bcr = target.getBoundingClientRect();
-    var xy = _getXY(evt);
-    var x = xy[0], y = xy[1];
-    x-=bcr.left
-    y-=bcr.top
-    x = Math.max(0,Math.min(bcr.width,x));
-    y = Math.max(0,Math.min(bcr.height,y));
-    var s = x/bcr.width*100;
-    // var t = (200-s)/100;
-    // var l = (1-y/bcr.height)*50*t;
-    var l = (1-y/bcr.height)*100;
-    // console.log(s,l)
-    cp.setHSL(null,s,l);
-  }
-  toDraggable(box_sl,cb_for_sl,cb_for_sl,null);
-  var cb_hsl = function(evt){cp.setHSL(text_h.value,text_s.value,text_l.value)}
-  text_h.addEventListener("input",cb_hsl);
-  text_s.addEventListener("input",cb_hsl);
-  text_l.addEventListener("input",cb_hsl);
-  var cb_rgb = function(evt){cp.setRGB(text_r.value,text_g.value,text_b.value)}
-  text_r.addEventListener("input",cb_rgb);
-  text_g.addEventListener("input",cb_rgb);
-  text_b.addEventListener("input",cb_rgb);
-  var cb_hex = function(evt){
-    var reg = new RegExp(this.pattern, "");
-    if (reg.test(this.value)) {
-      // The ZIP follows the constraint, we use the ConstraintAPI to tell it
-      this.setCustomValidity("");
-    }else{
-      this.setCustomValidity("HEX TYPE : #0cA9fF or #09f")
-      console.log("HEX TYPE : #0cA9fF or #09f");
-    }
-    if(!this.reportValidity()){    
-      return;
-    }
-    cp.setHEX(this.value)
-    console.log(this.value);
-  }
-  text_hex.addEventListener("input",cb_hex);
-  var cb_confirm = function(evt){cp.confirm()}
-  btn_confirm.addEventListener("click",cb_confirm);
-  var cb_cancel = function(evt){cp.cancel()}
-  btn_cancel.addEventListener("click",cb_cancel);
-  var cb_curr = function(evt){cp.setData(this.c_data);}
-  btn_curr.addEventListener("click",cb_curr);
-  // btn_new.addEventListener("click",cb_curr);
-  tab_colors.addEventListener("click",function(evt){
-    var target = evt.target;
-    if(!target.c_data){return;}
-    cp.setData(target.c_data);
-    _sync();
-  });
-  tab_colors.addEventListener("dblclick",function(evt){
-    var target = evt.target;
-    if(!target.c_data){return;}
-    cp.setData(target.c_data);
-    _sync();
-    cp.confirm();
-  });
-  
-  /* === 내용 초기화 === */
-  c_data = cp.parseColorString(opt.defColor);
-  setBookmark(opt.bookmark);
-  initHistoryFromLS();
-  _sync();
-  btn_curr.style.backgroundColor=cp.toStringHEX();
-  for(var i=0,m=bg_color_curr.length;i<m;i++){
-    bg_color_curr[i].style.backgroundColor=cp.toStringHEX();
-    bg_color_curr[i].c_data = Object.assign({},c_data);
-  }
-  
-  
-  
-  return cp;
-}
+  return Color;
+})()
+// 
+// var c = new ColorPalette.Color();
+// // c.set("rgb(1,2,3)")
+// c.set("rgb(103,72,66)")
+// // c.set("#ccaa")
+// // c.set({r:100,g:140,b:"20"})
+// console.log(c.toString());
+// console.log(c.toStringHSL());
+// console.log(c.toStringRGB());
+// console.log(c.toStringHEX());
