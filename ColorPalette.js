@@ -286,7 +286,7 @@ var ColorPalette = function(i_opt){
 
   cp.previewHSL = function(h,s,l){
     // var hsl = c_obj_pre.toHSL();
-    hsl_pre = {h:h==null?hsl_pre.h:parseInt(h),s:s==null?hsl_pre.s:parseInt(s),l:l==null?hsl_pre.l:parseInt(l)};
+    hsl_pre = {h:h==null?hsl_pre.h:parseFloat(h),s:s==null?hsl_pre.s:parseFloat(s),l:l==null?hsl_pre.l:parseFloat(l)};
     c_obj_pre.set(hsl_pre);
     _sync();    
   }
@@ -651,13 +651,3 @@ ColorPalette.Color = (function(Color){
   }
   return Color;
 })()
-// 
-// var c = new ColorPalette.Color();
-// // c.set("rgb(1,2,3)")
-// c.set("rgb(103,72,66)")
-// // c.set("#ccaa")
-// // c.set({r:100,g:140,b:"20"})
-// console.log(c.toString());
-// console.log(c.toStringHSL());
-// console.log(c.toStringRGB());
-// console.log(c.toStringHEX());
