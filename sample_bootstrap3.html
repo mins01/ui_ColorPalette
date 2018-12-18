@@ -80,19 +80,30 @@
 </script>
 <style>
 /* 부트스트랩 연동 호환용 */
-#testModal .modal-dialog {
+.wc2-modal-color{
+
+}
+.wc2-modal-color .modal-dialog {
 	margin: 0 auto;
-	padding: 1em 0 1em 0;
+	padding: 0.5em;
 	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-#testModal .modal-content{
-	height: 100%;
+.wc2-modal-color .modal-content{
+	max-height: 100%;
 }
-#testModal .modal-body{
+@media (max-height: 700px) {
+	.wc2-modal-color .modal-content{
+		height: 100%;
+	}
+}
+.wc2-modal-color .modal-body{
 	height: calc(100% - 70px);
 	padding: 5px;
 }
-#testModal .modal-body .colorPalette{
+.wc2-modal-color .modal-body .colorPalette{
 	max-height: 100%;
 }
 </style>
@@ -128,7 +139,7 @@
 			
 		</div>
 		
-		<div id="testModal" class="modal" tabindex="-1" role="dialog">
+		<div id="testModal" class="modal wc2-modal-color" tabindex="-1" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
