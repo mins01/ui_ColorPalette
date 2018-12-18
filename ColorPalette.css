@@ -248,7 +248,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	display: flex;flex-direction: column;
 }
 .colorPalette-tab-hsl{
-	flex: 1 0 200px;
+	flex: 0 1 360px;
 	min-height: auto;
 	max-height: 360px;
 }
@@ -257,7 +257,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	margin-bottom:0.5em;
 }
 .colorPalette-tab-colors{
-	flex: 0 1 auto;
+	flex: 1 1 200px;
 	min-height: 50px;
 	overflow-y: auto;
 	overflow-x: hidden;
