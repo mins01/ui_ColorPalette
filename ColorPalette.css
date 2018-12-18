@@ -149,10 +149,10 @@
 	content: ""
 }
 .colorPalette-btn-confirm::before{
-	content: "OK"
+	content: "Confirm"
 }
 .colorPalette-btn-cancel::before{
-	content: "NO"
+	content: "Cancel"
 }
 
 
@@ -267,4 +267,33 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 }
 .colorPalette-tab-colors:empty{
 	display: none;
+}
+
+
+/* 부트스트랩 연동 호환용 */
+.colorPalette-modal{
+
+}
+.colorPalette-modal .modal-dialog {
+	margin: 0 auto;
+	padding: 0.5em;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.colorPalette-modal .modal-content{
+	max-height: 100%;
+}
+@media (max-height: 800px) {
+	.colorPalette-modal .modal-content{
+		height: 100%;
+	}
+}
+.colorPalette-modal .modal-body{
+	height: calc(100% - 70px);
+	padding: 5px;
+}
+.colorPalette-modal .modal-body .colorPalette{
+	max-height: 100%;
 }

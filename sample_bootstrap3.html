@@ -78,35 +78,6 @@
 		//--- bootstrap modal 연동 샘플 끝
 	})
 </script>
-<style>
-/* 부트스트랩 연동 호환용 */
-.wc2-modal-color{
-
-}
-.wc2-modal-color .modal-dialog {
-	margin: 0 auto;
-	padding: 0.5em;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.wc2-modal-color .modal-content{
-	max-height: 100%;
-}
-@media (max-height: 700px) {
-	.wc2-modal-color .modal-content{
-		height: 100%;
-	}
-}
-.wc2-modal-color .modal-body{
-	height: calc(100% - 70px);
-	padding: 5px;
-}
-.wc2-modal-color .modal-body .colorPalette{
-	max-height: 100%;
-}
-</style>
 
 </head>
 <body style="background-color:#eee;word-break:break-all">
@@ -122,16 +93,16 @@
 		<h2>sample for bootstrap 3</h2>
 		<hr />
 		<!-- Button trigger modal -->
-		<button id="testBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal">
+		<button id="testBtn" type="button" class="btn" data-toggle="modal" data-target="#testModal">
 			bootstrap modal samlpe
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('#ff0000')" style="background-color:#ff0000">
+		<button type="button" class="btn" data-toggle="modal" data-target="#testModal" onclick="cp2.set('#ff0000')" style="background-color:#ff0000">
 			open #FF0000
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('rgb(100,200,30)')" style="background-color:rgb(100,200,30)">
+		<button type="button" class="btn" data-toggle="modal" data-target="#testModal" onclick="cp2.set('rgb(100,200,30)')" style="background-color:rgb(100,200,30)">
 			open rgb(100,200,30)
 		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal" onclick="cp2.set('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
+		<button type="button" class="btn" data-toggle="modal" data-target="#testModal" onclick="cp2.set('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
 			open hsl(270,50%,25%)
 		</button>
 		<hr />
