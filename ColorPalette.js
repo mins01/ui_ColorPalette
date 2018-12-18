@@ -227,6 +227,11 @@ var ColorPalette = function(i_opt){
     if(t) t.removeAttribute('data-selected');
     var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-stringHEX="'+stringHEX+'"]');
     if(t) t.setAttribute('data-selected',true);
+    /* 선택된 색 */
+    for(var i=0,m=bg_color_curr.length;i<m;i++){
+      bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
+      bg_color_curr[i].rgb = c_obj.toRGB();
+    }
   }
   var setBookmark = function(defColor){
     for(var i=0,m=defColor.length;i<m;i++){
@@ -354,10 +359,6 @@ var ColorPalette = function(i_opt){
     var is_changed = (c_obj_pre.toStringRGB()!=c_obj.toStringRGB());
     c_obj.set(c_obj_pre.toRGB());
     c_hsl = Object.assign({},c_hsl_pre);
-    for(var i=0,m=bg_color_curr.length;i<m;i++){
-      bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
-      bg_color_curr[i].rgb = c_obj.toRGB();
-    }
     addColorHistory(c_obj.toRGB())
     _sync();
     if(is_changed) cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
