@@ -110,7 +110,8 @@ var ColorPalette = function(i_opt){
   var c_obj = new ColorPalette.Color({r:0,g:0,b:0}); //선택된
   var c_obj_pre = new ColorPalette.Color({r:0,g:0,b:0}); //선택중인
   var c_obj_tmp = new ColorPalette.Color({r:0,g:0,b:0}); //계산용
-  var hsl_pre = {h:0,s:0,l:0};
+  var c_hsl = {h:0,s:0,l:0};
+  var c_hsl_pre = {h:0,s:0,l:0};
   bar_s.style.top=0;  bar_s.style.left=0;
   bar_l.style.top=0;  bar_l.style.left=0;
   bar_h.style.top=0;  bar_h.style.left=0;
@@ -186,7 +187,7 @@ var ColorPalette = function(i_opt){
     }    
   }
   var _sync = function(byInput){
-    var hsl = hsl_pre;
+    var hsl = c_hsl_pre;
     var rgb = c_obj_pre.toRGB();
     bar_h.style.top=(hsl.h/360)*100+'%';
     
@@ -195,14 +196,14 @@ var ColorPalette = function(i_opt){
     }
     text_s.style.backgroundColor="hsl("+hsl.h+", 100%, "+hsl.l+"%)"
     text_l.style.backgroundColor="hsl("+hsl.h+", "+hsl.s+"%, 50%)"
-    
+    var toStringHSL = "hsl("+hsl.h+", "+hsl.s.toFixed(0)+"%,"+hsl.l.toFixed(0)+"%)"
     for(var i=0,m=bg_color_new.length;i<m;i++){
       bg_color_new[i].style.backgroundColor=c_obj_pre.toStringHEX();
       bg_color_new[i].rgb = rgb;
     }
     bar_s.style.left=hsl.s+'%';
     bar_l.style.top=(100-hsl.l)+'%';
-    tab_hsl.setAttribute('data-toStringHSL',c_obj_pre.toStringHSL())
+    tab_hsl.setAttribute('data-toStringHSL',toStringHSL)
     tab_hsl.setAttribute('data-toStringRGB',c_obj_pre.toStringRGB())
     tab_hsl.setAttribute('data-toStringHEX',c_obj_pre.toStringHEX())
     if(byInput!='hsl'){
@@ -219,7 +220,7 @@ var ColorPalette = function(i_opt){
       text_hex.value = c_obj_pre.toStringHEX();
     }
     text_rgb.value = c_obj_pre.toStringRGB();
-    text_hsl.value = c_obj_pre.toStringHSL();
+    text_hsl.value = toStringHSL;
     var stringHEX = c_obj_pre.toStringHEX();
     /* 즐겨찾기에서 선택 색 표시 */
     var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-selected]:not([data-stringHEX="'+stringHEX+'"])');
@@ -239,7 +240,8 @@ var ColorPalette = function(i_opt){
   * @return {String}
   */
   cp.toStringHSL = function(){
-    return c_obj.toStringHSL();
+    // return c_obj.toStringHSL();
+    return "hsl("+c_hsl.h+", "+c_hsl.s.toFixed(0)+"%,"+c_hsl.l.toFixed(0)+"%)";
   }
   /**
   * toStringRGB 색을 rgb(111,222,99) 로 나타냄
@@ -262,7 +264,7 @@ var ColorPalette = function(i_opt){
   cp.setHEX = function(hex_str){
     c_obj.set(hex_str)
     c_obj_pre.set(hex_str)
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync('hex')
     cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
     cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
@@ -274,7 +276,7 @@ var ColorPalette = function(i_opt){
   cp.set = function(str){
     c_obj.set(str)
     c_obj_pre.set(str)
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync()
     cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
     cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
@@ -286,13 +288,13 @@ var ColorPalette = function(i_opt){
 
   cp.previewHSL = function(h,s,l){
     // var hsl = c_obj_pre.toHSL();
-    hsl_pre = {h:h==null?hsl_pre.h:parseFloat(h),s:s==null?hsl_pre.s:parseFloat(s),l:l==null?hsl_pre.l:parseFloat(l)};
-    c_obj_pre.set(hsl_pre);
+    c_hsl_pre = {h:h==null?c_hsl_pre.h:parseFloat(h),s:s==null?c_hsl_pre.s:parseFloat(s),l:l==null?c_hsl_pre.l:parseFloat(l)};
+    c_obj_pre.set(c_hsl_pre);
     _sync();    
   }
   cp.setPreview = function(obj){
     c_obj_pre.set(obj)
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync();
   }
   cp.getPreview = function(){
@@ -303,7 +305,7 @@ var ColorPalette = function(i_opt){
   cp.previewRGB = function(r,g,b){
     var rgb = c_obj_pre.toRGB();
     c_obj_pre.set({r:r==null?rgb.r:r,g:g==null?rgb.g:g,b:b==null?rgb.b:b})
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync();
   }  
   /**
@@ -316,7 +318,7 @@ var ColorPalette = function(i_opt){
     var hsl = {h:h,s:s,l:l}
     c_obj.set(hsl)
     c_obj_pre.set(hsl)
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync();
     cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
     cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
@@ -331,7 +333,7 @@ var ColorPalette = function(i_opt){
     var rgb = {r:r,g:g,b:b}
     c_obj.set(rgb)
     c_obj_pre.set(rgb)
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync()
     cp.dispatchEvent((new CustomEvent("input", {bubbles: true, cancelable: true, detail: {}})));
     cp.dispatchEvent((new CustomEvent("change", {bubbles: true, cancelable: true, detail: {}})));
@@ -351,6 +353,7 @@ var ColorPalette = function(i_opt){
   cp.confirm = function(){
     var is_changed = (c_obj_pre.toStringRGB()!=c_obj.toStringRGB());
     c_obj.set(c_obj_pre.toRGB());
+    c_hsl = Object.assign({},c_hsl_pre);
     for(var i=0,m=bg_color_curr.length;i<m;i++){
       bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
       bg_color_curr[i].rgb = c_obj.toRGB();
@@ -366,7 +369,7 @@ var ColorPalette = function(i_opt){
   */
   cp.cancel = function(){
     c_obj_pre.set(c_obj.toRGB());
-    hsl_pre = c_obj_pre.toHSL()
+    c_hsl_pre = c_obj_pre.toHSL()
     _sync();
     cp.dispatchEvent((new CustomEvent("cancel", {})));
   }
@@ -455,7 +458,7 @@ var ColorPalette = function(i_opt){
   /* === 내용 초기화 === */
   c_obj.set(opt.defColor)
   c_obj_pre.set(opt.defColor)
-  hsl_pre = c_obj_pre.toHSL()
+  c_hsl_pre = c_obj_pre.toHSL()
   setBookmark(opt.bookmark);
   initHistoryFromLS();
   _sync();
