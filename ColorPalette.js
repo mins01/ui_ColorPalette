@@ -24,6 +24,12 @@ var ColorPalette = function(i_opt){
   </div> \
   </div> \
   <div  class="colorPalette-tab colorPalette-tab-info"> \
+  <div class="colorPalette-box colorPalette-box-btns"> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-curr colorPalette-bg-color-curr"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-new colorPalette-bg-color-new"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-confirm"></button> \
+  <button type="button" class="colorPalette-btn colorPalette-btn-cancel"></button> \
+  </div> \
   <div class="colorPalette-box colorPalette-box-hsl"> \
   <div class="inputRangeBox inputRangeBox-design-1" data-value="" data-prefix="H " data-suffix="°" style="width:100%;"> \
   <input class="colorPalette-text colorPalette-text-h" type="range" min="0" max="360" step="1"  /> \
@@ -59,12 +65,6 @@ var ColorPalette = function(i_opt){
   <dt>HEX</dt> \
   <dd><input spellcheck="false" class="colorPalette-text colorPalette-text-hex" type="text" pattern="^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$" maxlength="7" />	</dd> \
   </dl> \
-  </div> \
-  <div class="colorPalette-box colorPalette-box-btns"> \
-  <button type="button" class="colorPalette-btn colorPalette-btn-curr colorPalette-bg-color-curr"></button> \
-  <button type="button" class="colorPalette-btn colorPalette-btn-new colorPalette-bg-color-new"></button> \
-  <button type="button" class="colorPalette-btn colorPalette-btn-confirm"></button> \
-  <button type="button" class="colorPalette-btn colorPalette-btn-cancel"></button> \
   </div> \
   </div> \
   <div class="colorPalette-tab colorPalette-tab-colors"> \
@@ -196,7 +196,7 @@ var ColorPalette = function(i_opt){
     }
     text_s.style.backgroundColor="hsl("+hsl.h+", 100%, "+hsl.l+"%)"
     text_l.style.backgroundColor="hsl("+hsl.h+", "+hsl.s+"%, 50%)"
-    var toStringHSL = "hsl("+hsl.h+", "+hsl.s.toFixed(0)+"%,"+hsl.l.toFixed(0)+"%)"
+    var toStringHSL = "hsl("+hsl.h.toFixed(0)+", "+hsl.s.toFixed(0)+"%,"+hsl.l.toFixed(0)+"%)"
     for(var i=0,m=bg_color_new.length;i<m;i++){
       bg_color_new[i].style.backgroundColor=c_obj_pre.toStringHEX();
       bg_color_new[i].rgb = rgb;
@@ -227,7 +227,7 @@ var ColorPalette = function(i_opt){
     if(t) t.removeAttribute('data-selected');
     var t = cp.querySelector('.colorPalette-tab-colors .colorPalette-color[data-stringHEX="'+stringHEX+'"]');
     if(t) t.setAttribute('data-selected',true);
-    /* 선택된 색 */
+    /* 선택된  */
     for(var i=0,m=bg_color_curr.length;i<m;i++){
       bg_color_curr[i].style.backgroundColor=c_obj.toStringHEX();
       bg_color_curr[i].rgb = c_obj.toRGB();

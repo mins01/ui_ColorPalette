@@ -135,8 +135,15 @@
 .colorPalette-btn:focus{
 	outline-width:0;
 }
+.colorPalette-btn-curr{
+	border: 2px solid #999;
+}
+
 .colorPalette-btn-curr::before{
 	content: ""
+}
+.colorPalette-btn-new{
+	border: 2px solid #999;
 }
 .colorPalette-btn-new::before{
 	content: ""
@@ -214,9 +221,9 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 .colorPalette-color{
 	display: inline-block;
 	width:2em;height: 2em;
-	margin:5px; padding:0;
+	margin:3px; padding:0;
+	border:1px solid #000;
 	position: relative;
-	border-width: 0;
 }
 .colorPalette-color[data-selected]::after{
 	position: absolute;
@@ -227,13 +234,13 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	align-items: center; /* 세로 중앙 */
 }
 .colorPalette-bookmark::before{
-	content: "📎fix";font-size: 8px;
-	position: absolute;bottom: 1px; right: 1px;
+	content: "📎";
+	position: absolute;top: -0.5em; right: 0;
 	color: #333;
 }
 
 .colorPalette-box-hsl , .colorPalette-box-rgb , .colorPalette-box-colorString{
-	font-size:24px;
+	/* font-size:24px; */
 }
 
 /* 세로방향 FLEX */
@@ -241,7 +248,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	display: flex;flex-direction: column;
 }
 .colorPalette-tab-hsl{
-	flex: 0 1 360px;
+	flex: 0 10 360px;
 	min-height: auto;
 }
 .colorPalette-tab-info{

@@ -42,8 +42,9 @@
 	var cp;
 	var $testModal;
 	window.addEventListener('load',function(evt){
-		
-		cp = ColorPalette({defColor:"#a9c",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp"});
+		var bookmark = ["#000000","#ffffff","#c00000","#ff0000","#ffc000","#ffff00","#92d050","#00b050","#00b0f0","#0070c0","#002060","#7030a0"]
+
+		cp = ColorPalette({defColor:"#a9c",bookmark:bookmark,maxHistory:40,localStorageHistoryKey:"cp"});
 		InputRangeBox.autoInit(cp);
 		document.getElementById('textDiv').appendChild(cp);
 		cp.addEventListener('input',function(evt){
@@ -66,7 +67,7 @@
 		//--- bootstrap modal 연동 샘플 시작
 		$testModal = $("#testModal");
 		
-		cp2 = ColorPalette({defColor:"#abc",bookmark:["#abc","#369"],maxHistory:40,localStorageHistoryKey:"cp2"});
+		cp2 = ColorPalette({defColor:"#abc",bookmark:bookmark,maxHistory:40,localStorageHistoryKey:"cp2"});
 		InputRangeBox.autoInit(cp2);
 		$testModal.find(".modal-body").html("").append(cp2);
 		cp2.addEventListener("confirm",function(evt){
