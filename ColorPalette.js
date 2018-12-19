@@ -449,13 +449,13 @@ var ColorPalette = function(i_opt){
     cp.setPreview(target.rgb);
     _sync();
   });
-  tab_colors.addEventListener("dblclick",function(evt){
-    var target = evt.target;
-    if(!target.rgb){return;}
-    cp.set(target.rgb);
-    _sync();
-    cp.confirm();
-  });
+  // tab_colors.addEventListener("dblclick",function(evt){
+  //   var target = evt.target;
+  //   if(!target.rgb){return;}
+  //   cp.set(target.rgb);
+  //   _sync();
+  //   cp.confirm();
+  // });
   /* === 내용 초기화 === */
   c_obj.set(opt.defColor)
   c_obj_pre.set(opt.defColor)
