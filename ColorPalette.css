@@ -58,10 +58,10 @@
 	/* background-image: linear-gradient(to top, #000, hsla(20, 42%, 65%, 0)),linear-gradient(to right, #fff, hsla(20, 42%, 65%, 0)); */
 	background-image:  linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%),
 	linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%)
-	
+
 	;
 	/* mix-blend-mode: multiply; */
-	
+
 }
 .colorPalette-range-l{
 	/* mix-blend-mode: multiply; */
@@ -76,7 +76,7 @@
 	margin-left: 10px;
 	position: relative;
 	cursor: crosshair;
-	isolation: isolate; 
+	isolation: isolate;
 	flex: 0 0 30px;
 	overflow: hidden;
 }
@@ -109,14 +109,14 @@
 .colorPalette-bar-l , .colorPalette-bar-h{
 	left:0;top:50%;
 	height:2px;overflow: visible;
-	width:100%;	
+	width:100%;
 }
 .colorPalette-bar-l::before ,
 .colorPalette-bar-h::before{
 	left: 0px;top: -2px;bottom: 0;right: 0px;
-	
+
 	border-width: 1px 0px 1px 0px;
-	
+
 	height: 4px;
 }
 
@@ -125,12 +125,13 @@
 
 /* 버튼 들 */
 .colorPalette-btn{
-	border:0px solid #000;
+	border:2px solid #999;
 	width:3em;
 	height:2em;
 	margin:2px 0.3em;
 	vertical-align: top;
 	border-radius: 0.5em;
+	background-color: #ccc;
 }
 .colorPalette-btn:focus{
 	outline-width:0;
@@ -198,7 +199,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 .colorPalette-box-colorString .colorPalette-text-hsl{ color: #999;}
 
 .colorPalette-text-hsl,.colorPalette-text-rgb,.colorPalette-text-hex{
-	width:5em; text-align: left; background-color: transparent; 
+	width:5em; text-align: left; background-color: transparent;
 	border-width:0;
 	border-bottom: 1px solid #ccc;
 }
@@ -212,7 +213,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	margin:0 0.2em;
 }
 .colorPalette-tab-info .inputRangeBox::before{
-	text-shadow: 1px 1px 0px #fff;	
+	text-shadow: 1px 1px 0px #fff;
 }
 
 
@@ -261,7 +262,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	min-height: 50px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	
+
 	border: 1px dashed #999;
 	border-width: 2px 0 2px 0;
 }
