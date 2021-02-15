@@ -225,6 +225,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	margin:3px; padding:0;
 	border:1px solid #000;
 	position: relative;
+	vertical-align: bottom;
 }
 .colorPalette-color[data-selected]::after{
 	position: absolute;
