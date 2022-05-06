@@ -51,7 +51,7 @@
 	isolation: isolate;
 	flex: 1 0 auto;
 	overflow: hidden;
-	border: 1px solid #999;
+	border: 1px solid #333;
 }
 .colorPalette-range-s{
 	/* background: linear-gradient(to right bottom, hsl(0, 100%, 100%), hsl(0, 100%, 50%)) !important; */
@@ -80,7 +80,7 @@
 	isolation: isolate;
 	flex: 0 0 30px;
 	overflow: hidden;
-	border: thin solid #999;
+	border: thin solid #333;
 }
 .colorPalette-range-h{
 	background: linear-gradient(to bottom, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
@@ -145,7 +145,8 @@
 	border-radius: 0.5em 0 0 0.5em;
 }
 .colorPalette-btn-curr::before{
-	content: "Current"
+	text-shadow: 0px 0px 3px #fff;
+	content: "Current";
 }
 .colorPalette-btn-new{
 	border: 2px solid #999;
@@ -154,6 +155,7 @@
 	border-radius: 0 0.5em 0.5em 0;
 }
 .colorPalette-btn-new::before{
+	text-shadow: 0px 0px 3px #fff;
 	content: "New"
 }
 .colorPalette-btn-confirm::before{

@@ -33,3 +33,18 @@
 :lang(ko) .colorPalette-btn-cancel::before{
 	content: "취소"
 }
+
+/* Japanese */
+
+:lang(ja) .colorPalette-btn-curr::before{
+	content: "現在"
+}
+:lang(ja) .colorPalette-btn-new::before{
+	content: "新着"
+}
+:lang(ja) .colorPalette-btn-confirm::before{
+	content: "確認"
+}
+:lang(ja) .colorPalette-btn-cancel::before{
+	content: "取消"
+}
