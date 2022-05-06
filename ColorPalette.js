@@ -173,8 +173,8 @@ var ColorPalette = function(i_opt){
       his.setAttribute('data-stringHEX',stringHEX);
       tab_colors.appendChild(his);  
     }   
-    for(var i=0,m=cp_history.length;i<m;i++){
-      rgb= cp_history[i];
+    for(var m=0,i=cp_history.length;i>m;i--){
+      rgb= cp_history[i-1];
       c_obj_tmp.set(rgb);
       his = document.createElement('button');
       his.className="colorPalette-color colorPalette-history"
