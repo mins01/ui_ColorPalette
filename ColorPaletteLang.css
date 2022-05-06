@@ -1,0 +1,35 @@
+@charset "UTF-8";
+/**
+* colorPaletteLang
+* 컬러 파레트 언어팩 (Language pack)
+* "공대여자는 이쁘다"를 표시기해야 쓸 수 있습니다.
+*/
+
+/* English */
+:lang(en) .colorPalette-btn-curr::before{
+	content: "Current"
+}
+:lang(en) .colorPalette-btn-new::before{
+	content: "New"
+}
+:lang(en) .colorPalette-btn-confirm::before{
+	content: "Confirm"
+}
+:lang(en) .colorPalette-btn-cancel::before{
+	content: "Cancel"
+}
+
+
+/* Korean */
+:lang(ko) .colorPalette-btn-curr::before{
+	content: "현재"
+}
+:lang(ko) .colorPalette-btn-new::before{
+	content: "새로운"
+}
+:lang(ko) .colorPalette-btn-confirm::before{
+	content: "확인"
+}
+:lang(ko) .colorPalette-btn-cancel::before{
+	content: "취소"
+}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" >
+<html lang="en" >
 <head>
 	<title>ColorPalette</title>
 	<meta charset="utf-8">
@@ -37,9 +37,10 @@
 	
 	<script src="toDraggable/toDraggable.js"></script>	
 	<link rel="stylesheet" href="ColorPalette.css"> 
+	<link rel="stylesheet" href="ColorPaletteLang.css"> 
 	<script src="ColorPalette.js"></script>
 	<script>
-	var cp;
+	var cp,cp2,cp3;
 	var $testModal;
 	window.addEventListener('load',function(evt){
 		var bookmark = ["#000000","#ffffff","#c00000","#ff0000","#ffc000","#ffff00","#92d050","#00b050","#00b0f0","#0070c0","#002060","#7030a0"]
@@ -80,6 +81,24 @@
 			$testModal.modal('hide');
 		})
 		//--- bootstrap modal 연동 샘플 끝
+
+
+		cp3 = ColorPalette({defColor:"#abc",bookmark:bookmark,maxHistory:40,localStorageHistoryKey:"cp"});
+		InputRangeBox.autoInit(cp3);
+		let testModalLangKo = document.querySelector('#testModalLangKo')
+		let modal_body = testModalLangKo.querySelector('.modal-body');
+		modal_body.innerHTML = '';
+		modal_body.append(cp3);
+
+		cp3.addEventListener("confirm",function(evt){
+			$(testModalLangKo).modal('hide');
+			var c_obj = this.get();
+			$("#testBtnLangKo").css("backgroundColor",c_obj.toString())
+		})
+		cp3.addEventListener("cancel",function(evt){
+			$(testModalLangKo).modal('hide');
+		})
+
 	})
 </script>
 
@@ -163,6 +182,9 @@
 		<button type="button" class="btn" data-toggle="modal" data-target="#testModal" onclick="cp2.set('hsl(270,50%,25%)')" style="background-color:hsl(270,50%,25%)">
 			open hsl(270,50%,25%)
 		</button>
+		<button type="button" id="testBtnLangKo" class="btn" data-toggle="modal" data-target="#testModalLangKo" onclick="cp3.set('hsl(170,50%,25%)')" style="background-color:hsl(170,50%,25%)">
+			[Lang="ko"]
+		</button>
 		<hr />
 		setPreview(string) : 선택중인 색 변경 <input type="text" oninput="cp.setPreview(this.value)" /><br />
 		getPreview : <button type="button" onclick="alert(cp.getPreview().toStringHEX())">선택중인 색 확인</button>
@@ -184,13 +206,38 @@
 						<p>Modal body text goes here.</p>
 					</div>
 					<!-- <div class="modal-footer">
-					<button type="button" class="btn btn-primary">Save changes</button>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div> -->
+						<button type="button" class="btn btn-primary">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div> -->
+				</div>
 			</div>
 		</div>
+
+		<div id="testModalLangKo" class="modal colorPalette-modal" tabindex="-1" role="dialog" lang="ko">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">color palette lang="??"</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Modal body text goes here.</p>
+					</div>
+					<div class="modal-footer">
+						<select onclick="this.closest('.colorPalette-modal').lang=this.value">
+							<option value="en">en</option>
+							<option value="ko" selected>ko</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
 	</div>
-</div>
 
 </body>
 </html>

@@ -51,6 +51,7 @@
 	isolation: isolate;
 	flex: 1 0 auto;
 	overflow: hidden;
+	border: 1px solid #999;
 }
 .colorPalette-range-s{
 	/* background: linear-gradient(to right bottom, hsl(0, 100%, 100%), hsl(0, 100%, 50%)) !important; */
@@ -79,6 +80,7 @@
 	isolation: isolate; 
 	flex: 0 0 30px;
 	overflow: hidden;
+	border: thin solid #999;
 }
 .colorPalette-range-h{
 	background: linear-gradient(to bottom, hsl(0, 100%, 50%),hsl(20, 100%, 50%),hsl(40, 100%, 50%),hsl(60, 100%, 50%)
@@ -125,7 +127,7 @@
 
 /* 버튼 들 */
 .colorPalette-btn{
-	border:0px solid #000;
+	border:2px solid #333;
 	width:3em;
 	height:2em;
 	margin:2px 0.3em;
@@ -137,16 +139,21 @@
 }
 .colorPalette-btn-curr{
 	border: 2px solid #999;
+	margin-right: 0px;
+  border-right-width: 1px;
+	border-radius: 0.5em 0 0 0.5em;
 }
-
 .colorPalette-btn-curr::before{
-	content: ""
+	content: "Current"
 }
 .colorPalette-btn-new{
 	border: 2px solid #999;
+	margin-left: 0px;
+  border-left-width: 1px;
+	border-radius: 0 0.5em 0.5em 0;
 }
 .colorPalette-btn-new::before{
-	content: ""
+	content: "New"
 }
 .colorPalette-btn-confirm::before{
 	content: "Confirm"
@@ -234,7 +241,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	align-items: center; /* 세로 중앙 */
 }
 .colorPalette-bookmark::before{
-	content: "📎";
+	content: "📌";
 	position: absolute;top: -0.5em; right: 0;
 	color: #333;
 }
@@ -264,6 +271,12 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	
 	border: 1px dashed #999;
 	border-width: 2px 0 2px 0;
+
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	justify-content: flex-start;
 }
 .colorPalette-tab-colors:empty{
 	display: none;
