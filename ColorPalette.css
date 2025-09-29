@@ -280,7 +280,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	/* margin-bottom:0.5em; */
 }
 .colorPalette-tab-colors{
-	flex: 1 1 100px;
+	flex: 1 1 200px;
 	min-height: 3em;
 	
 	overflow-y: auto;
