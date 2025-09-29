@@ -198,7 +198,11 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 
 .colorPalette-box-hsl , .colorPalette-box-rgb , .colorPalette-box-colorString , .colorPalette-box-btns{
 	display: flex;
-	margin-top:0.5em;
+	gap: 4px;
+	/* margin-top:0.5em; */
+}
+.colorPalette-box-btns{
+	gap: 0;
 }
 .colorPalette-box-colorString dl{margin:0; box-sizing: border-box; width: 100%;}
 .colorPalette-box-colorString dt{ font-size: 0.5em; font-weight: bold;padding:0;margin:0;}
@@ -218,6 +222,11 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 .colorPalette-box-btns >*{
 	width: 100%;
 }
+.colorPalette-tab-info{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
 .colorPalette-tab-info .inputRangeBox{
 	margin:0 0.2em;
 }
@@ -231,7 +240,7 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 .colorPalette-color{
 	display: inline-block;
 	width:2em;height: 2em;
-	margin:3px; padding:0;
+	/* margin:3px; padding:0; */
 	border:1px solid #000;
 	position: relative;
 	vertical-align: bottom;
@@ -256,7 +265,10 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 
 /* 세로방향 FLEX */
 .colorPalette{
-	display: flex;flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	gap:4px;
+	width: 100%;
 }
 .colorPalette-tab-hsl{
 	flex: 0 1 360px;
@@ -264,23 +276,34 @@ linear-gradient(to right, hsla(0, 0%, 50%, 1) 0%, hsla(0, 0%, 50%, 0) 100%) */
 	max-height: 360px;
 }
 .colorPalette-tab-info{
-	flex: 0 0 0;
-	margin-bottom:0.5em;
+	flex: 0 0 auto;
+	/* margin-bottom:0.5em; */
 }
 .colorPalette-tab-colors{
-	flex: 1 1 200px;
-	min-height: 50px;
+	flex: 1 1 100px;
+	min-height: 3em;
+	
 	overflow-y: auto;
 	overflow-x: hidden;
 
 	border: 1px dashed #999;
-	border-width: 2px 0 2px 0;
+	border-width: 2px 0 0px 0;
+}
+.colorPalette-tab-colors{
+	margin:0px auto;
+	padding:5px 0;
+	display: grid;
+    grid-template-columns: repeat(auto-fill, 2em);
+    /* grid-template-rows: 2em; */
+	grid-auto-rows: 2em;
+    gap: 5px;
+    /* justify-items: center; */
+    width: 100%;
+    justify-content: center;
+    
 
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	justify-content: flex-start;
+	
+
 }
 .colorPalette-tab-colors:empty{
 	display: none;
